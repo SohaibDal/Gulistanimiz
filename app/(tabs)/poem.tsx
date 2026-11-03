@@ -616,4 +616,73 @@ export default function Poem() {
                       transform: [{ scale: heartScale }]
                     }}
                   >
-                    
+                    ♥
+                  </Animated.Text>
+                </Pressable>
+
+                <Pressable
+                  onPress={async () => {
+                    const text = `${poem.original}\n\n${poem.translations[language]}\n\n— ${poet.name}\nGulistanimiz`;
+                    try {
+                      if (Platform.OS === "web" && (navigator as any).share) {
+                        await (navigator as any).share({ text });
+                      } else {
+                        await Sharing.shareAsync(
+                          "data:text/plain;charset=utf-8," +
+                            encodeURIComponent(text)
+                        );
+                      }
+                    } catch {
+                      // ignore share errors
+                    }
+                  }}
+                  hitSlop={8}
+                >
+                  <Text
+                    style={{
+                      color: theme.textMuted,
+                      fontSize: 20
+                    }}
+                  >
+                    ⤴︎
+                  </Text>
+                </Pressable>
+              </View>
+
+              {/* Simple index / hint */}
+              <Text
+                style={{
+                  color: theme.textMuted,
+                  fontSize: 12
+                }}
+              >
+                {index + 1} / {poems.length}
+              </Text>
+            </View>
+
+            <View style={{ marginTop: 12, alignItems: "center" }}>
+              <Text
+                style={{
+                  color: theme.textMuted,
+                  fontSize: 13
+                }}
+              >
+                — {poet.name}
+              </Text>
+
+              <Text
+                style={{
+                  color: theme.textSecondary,
+                  fontSize: 11,
+                  marginTop: 6
+                }}
+              >
+                {isEdge ? "Swipe to explore poems" : "Swipe left or right"}
+              </Text>
+            </View>
+          </Animated.View>
+        </View>
+      </GestureDetector>
+    </ScreenWrapper>
+  );
+}

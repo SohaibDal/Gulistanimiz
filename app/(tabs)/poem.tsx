@@ -57,6 +57,7 @@ export default function Poem() {
   const [saved, setSaved] = useState(false);
   const [userName, setUserName] = useState<string>("Guest");
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const initialFiltersRef = useRef<{ poetId?: string; genre?: string; source?: string } | null>(null);
 
@@ -119,19 +120,27 @@ export default function Poem() {
   useEffect(() => {
     async function loadPoems() {
       setIsLoading(true);
+      setError(null);
 
-      if (source === "saved") {
-        const savedPoems = await getSavedPoemsFull();
-        setPoems(savedPoems);
-      } else if (poetId) {
-        setPoems(getPoemsByPoet(poetId));
-      } else if (genre) {
-        setPoems(getPoemsByGenre(genre));
-      } else {
-        setPoems(shuffle(getAllPoems()));
+      try {
+        if (source === "saved") {
+          const savedPoems = await getSavedPoemsFull();
+          setPoems(savedPoems);
+        } else if (poetId) {
+          setPoems(getPoemsByPoet(poetId));
+        } else if (genre) {
+          setPoems(getPoemsByGenre(genre));
+        } else {
+          setPoems(shuffle(getAllPoems()));
+        }
+      } catch (e) {
+        setError(
+          "We couldn’t load your poems right now. Please check your connection and try again."
+        );
+        setPoems([]);
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     }
 
     loadPoems();
@@ -246,7 +255,7 @@ export default function Poem() {
     ? (poem.original as string).split("\n").slice(1).join("\n")
     : "";
 
-  /* ---------------- loading & empty states ---------------- */
+  /* ---------------- loading, empty & error states ---------------- */
   const renderLoading = () => (
     <ScreenWrapper padded={false}>
       <View
@@ -292,7 +301,51 @@ export default function Poem() {
         >
           {source === "saved"
             ? "You haven’t saved any poems yet. Save a poem to see it here."
-            : "Please try a different filter or come back later."}
+            : "There aren’t any poems to read right now. Try a different filter or come back later."}
+        </ThemedText>
+      </View>
+    </ScreenWrapper>
+  );
+
+  const renderError = () => (
+    <ScreenWrapper padded={false}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingHorizontal: 24
+        }}
+      >
+        <ThemedText
+          type="subtitle"
+          style={{
+            color: theme.textPrimary,
+            textAlign: "center",
+            marginBottom: 8
+          }}
+        >
+          Poems are taking a pause
+        </ThemedText>
+        <ThemedText
+          style={{
+            color: theme.textMuted,
+            fontSize: 14,
+            textAlign: "center",
+            marginBottom: 4
+          }}
+        >
+          {error ||
+            "We couldn’t load your poems right now. Please check your connection and try again."}
+        </ThemedText>
+        <ThemedText
+          style={{
+            color: theme.textMuted,
+            fontSize: 12,
+            textAlign: "center"
+          }}
+        >
+          You can pull to refresh or try again in a moment.
         </ThemedText>
       </View>
     </ScreenWrapper>
@@ -300,6 +353,10 @@ export default function Poem() {
 
   if (isLoading) {
     return renderLoading();
+  }
+
+  if (error) {
+    return renderError();
   }
 
   if (!poems.length || !poem || !poet) {

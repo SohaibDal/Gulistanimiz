@@ -27,6 +27,7 @@ import { useTheme } from "../../lib/theme-context";
 import { supabase } from "../../lib/supabase";
 import { getGreeting } from "../../lib/greeting";
 import ScreenWrapper from "../../components/ScreenWrapper";
+import { ThemedText } from "../../components/themed-text";
 
 export default function Poem() {
   const { theme } = useTheme();
@@ -238,7 +239,9 @@ export default function Poem() {
           alignItems: "center"
         }}
       >
-        <Text style={{ color: theme.textMuted }}>Loading poetry…</Text>
+        <ThemedText style={{ color: theme.textMuted }}>
+          Loading poetry…
+        </ThemedText>
       </View>
     </ScreenWrapper>
   );
@@ -253,17 +256,17 @@ export default function Poem() {
           paddingHorizontal: 24
         }}
       >
-        <Text
+        <ThemedText
+          type="subtitle"
           style={{
             color: theme.textPrimary,
-            fontSize: 18,
             textAlign: "center",
             marginBottom: 8
           }}
         >
           No poems to show.
-        </Text>
-        <Text
+        </ThemedText>
+        <ThemedText
           style={{
             color: theme.textMuted,
             fontSize: 14,
@@ -273,7 +276,7 @@ export default function Poem() {
           {source === "saved"
             ? "You haven’t saved any poems yet. Save a poem to see it here."
             : "Please try a different filter or come back later."}
-        </Text>
+        </ThemedText>
       </View>
     </ScreenWrapper>
   );
@@ -286,6 +289,14 @@ export default function Poem() {
     return renderEmpty();
   }
 
+  const spacing = {
+    xs: 4,
+    sm: 8,
+    md: 12,
+    lg: 16,
+    xl: 24
+  } as const;
+
   /* ---------------- render ---------------- */
   return (
     <ScreenWrapper padded={false}>
@@ -293,18 +304,18 @@ export default function Poem() {
         <View
           style={{
             flex: 1,
-            paddingHorizontal: 20,
-            paddingVertical: 24
+            paddingHorizontal: spacing.xl,
+            paddingVertical: spacing.xl
           }}
         >
           {/* Greeting / header */}
           <View
             style={{
-              marginBottom: 18,
+              marginBottom: spacing.lg,
               alignItems: "center"
             }}
           >
-            <Text
+            <ThemedText
               style={{
                 color: theme.textMuted,
                 fontSize: 14,
@@ -313,19 +324,19 @@ export default function Poem() {
               }}
             >
               {getGreeting()}, {userName}
-            </Text>
+            </ThemedText>
 
-            <Text
+            <ThemedText
               style={{
                 color: theme.textSecondary,
                 fontSize: 12,
                 textAlign: "center",
-                marginTop: 4,
+                marginTop: spacing.xs,
                 fontStyle: "italic"
               }}
             >
               May a verse find you today...
-            </Text>
+            </ThemedText>
           </View>
 
           {/* Full-screen poem card */}
@@ -336,7 +347,7 @@ export default function Poem() {
                 transform: [{ translateY }],
                 backgroundColor: theme.cardBackground,
                 borderRadius: 26,
-                padding: 24,
+                padding: spacing.xl,
                 borderWidth: 1,
                 borderColor: theme.cardBorder,
                 flex: 1
@@ -349,25 +360,25 @@ export default function Poem() {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginBottom: 12
+                  marginBottom: spacing.md
                 }}
               >
                 <View style={{ flexDirection: "row" }}>
                   <Pressable onPress={() => setLanguage("en")}>
-                    <Text
+                    <ThemedText
                       style={{
                         color:
                           language === "en"
                             ? theme.accent
                             : theme.textMuted,
-                        marginRight: 14
+                        marginRight: spacing.md
                       }}
                     >
                       EN
-                    </Text>
+                    </ThemedText>
                   </Pressable>
                   <Pressable onPress={() => setLanguage("tr")}>
-                    <Text
+                    <ThemedText
                       style={{
                         color:
                           language === "tr"
@@ -376,7 +387,7 @@ export default function Poem() {
                       }}
                     >
                       TR
-                    </Text>
+                    </ThemedText>
                   </Pressable>
                 </View>
 
@@ -385,7 +396,7 @@ export default function Poem() {
                     setShowTransliteration(!showTransliteration)
                   }
                 >
-                  <Text
+                  <ThemedText
                     style={{
                       color: showTransliteration
                         ? theme.accent
@@ -393,83 +404,80 @@ export default function Poem() {
                     }}
                   >
                     Transliteration
-                  </Text>
+                  </ThemedText>
                 </Pressable>
               </View>
 
               {/* Reminder link */}
               <Pressable
                 onPress={() => router.push("/settings")}
-                style={{ marginBottom: 8 }}
+                style={{ marginBottom: spacing.sm }}
               >
-                <Text
+                <ThemedText
+                  type="link"
                   style={{
                     color: theme.textMuted,
                     textAlign: "center"
                   }}
                 >
                   Daily Poetry Reminder
-                </Text>
+                </ThemedText>
               </Pressable>
 
               {/* Poem content */}
-              <View style={{ flex: 1, marginTop: 8 }}>
+              <View style={{ flex: 1, marginTop: spacing.sm }}>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 24 }}
+                  contentContainerStyle={{ paddingBottom: spacing.xl }}
                 >
                   {/* Title / first line */}
-                  <Text
+                  <ThemedText
+                    type="poemTitle"
                     style={{
                       color: theme.textPrimary,
-                      fontSize: 24,
-                      lineHeight: 32,
-                      textAlign: "center",
-                      marginBottom: poemBodyOriginal ? 12 : 20
+                      marginBottom: poemBodyOriginal ? spacing.md : spacing.lg
                     }}
                   >
                     {poemTitle}
-                  </Text>
+                  </ThemedText>
 
                   {/* Remaining original body, if any */}
                   {poemBodyOriginal ? (
-                    <Text
+                    <ThemedText
+                      type="poemBody"
                       style={{
                         color: theme.textPrimary,
-                        fontSize: 18,
-                        lineHeight: 28,
-                        textAlign: "center",
-                        marginBottom: 16
+                        marginBottom: spacing.lg
                       }}
                     >
                       {poemBodyOriginal}
-                    </Text>
+                    </ThemedText>
                   ) : null}
 
                   {/* Transliteration */}
                   {showTransliteration && poem.transliteration && (
-                    <Text
+                    <ThemedText
+                      type="poemTransliteration"
                       style={{
                         color: theme.textSecondary,
-                        marginVertical: 12,
-                        textAlign: "center"
+                        marginVertical: spacing.md
                       }}
                     >
                       {poem.transliteration}
-                    </Text>
+                    </ThemedText>
                   )}
 
                   {/* Translation */}
-                  <Text
+                  <ThemedText
+                    type="poemTranslation"
                     style={{
                       color: theme.textPrimary,
-                      textAlign: "center",
-                      marginTop: 12,
-                      marginBottom: 24
+                      marginTop: spacing.md,
+                      marginBottom: spacing.xl
                     }}
                   >
                     {poem.translations[language]}
-                  </Text>
+                  </ThemedText>
                 </ScrollView>
               </View>
 
@@ -479,7 +487,7 @@ export default function Poem() {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  marginBottom: 8
+                  marginBottom: spacing.sm
                 }}
               >
                 <Pressable
@@ -488,7 +496,7 @@ export default function Poem() {
                     const updated = await toggleSavedPoem(poem.id);
                     setSaved(updated.includes(poem.id));
                   }}
-                  style={{ marginHorizontal: 24 }}
+                  style={{ marginHorizontal: spacing.lg }}
                 >
                   <Animated.Text
                     style={{
@@ -516,7 +524,7 @@ export default function Poem() {
                       }
                     } catch {}
                   }}
-                  style={{ marginHorizontal: 24 }}
+                  style={{ marginHorizontal: spacing.lg }}
                 >
                   <Text
                     style={{ color: theme.textMuted, fontSize: 22 }}
@@ -526,14 +534,15 @@ export default function Poem() {
                 </Pressable>
               </View>
 
-              <Text
+              <ThemedText
+                type="poemMeta"
                 style={{
                   color: theme.textMuted,
                   textAlign: "center"
                 }}
               >
                 — {poet.name}
-              </Text>
+              </ThemedText>
             </Animated.View>
           </View>
         </View>

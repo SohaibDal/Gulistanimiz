@@ -12,7 +12,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { router, useLocalSearchParams } from "expo-router";
 import * as Sharing from "expo-sharing";
 
-import { loadItem } from "../../lib/storage";
+import { loadItem, loadReadingMode, type ReadingMode } from "../../lib/storage";
 import {
   getAllPoems,
   getPoemsByPoet,
@@ -60,6 +60,7 @@ export default function PoemScreen() {
   const [showTransliteration, setShowTransliteration] = useState(true);
   const [saved, setSaved] = useState(false);
   const [userName, setUserName] = useState<string>("Guest");
+  const [readingMode, setReadingMode] = useState<ReadingMode | null>(null);
 
   const poem = poems[index];
   const poet = useMemo(
@@ -180,6 +181,7 @@ export default function PoemScreen() {
     loadItem("transliteration").then(
       (t) => t !== null && setShowTransliteration(t)
     );
+    loadReadingMode().then((mode) => setReadingMode(mode ?? null));
   }, []);
 
   // Saved state
@@ -210,6 +212,25 @@ export default function PoemScreen() {
       if (name) setUserName(name);
     });
   }, []);
+
+  /*
+    Reading mode → visibility mapping
+    - translationOnly: show only translation
+    - persianOnly: show only original
+    - bilingual: show original + translation; transliteration remains user-togglable
+  */
+  const showOriginal =
+    readingMode === "persianOnly" ||
+    readingMode === "bilingual" ||
+    readingMode === null;
+
+  const showTranslation =
+    readingMode === "translationOnly" ||
+    readingMode === "bilingual" ||
+    readingMode === null;
+
+  const showTransliterationForMode =
+    readingMode === "bilingual" || readingMode === null;
 
   /* ---------------- gestures ---------------- */
   const panGesture = Gesture.Pan()
@@ -443,40 +464,46 @@ export default function PoemScreen() {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 24 }}
             >
-              <Text
-                style={{
-                  color: theme.textPrimary,
-                  fontSize: 26,
-                  lineHeight: 40,
-                  textAlign: "center"
-                }}
-              >
-                {poem.original}
-              </Text>
-
-              {showTransliteration && !!poem.transliteration && (
+              {showOriginal && (
                 <Text
                   style={{
-                    color: theme.textSecondary,
-                    marginTop: 16,
-                    textAlign: "center",
-                    fontSize: 14
+                    color: theme.textPrimary,
+                    fontSize: 26,
+                    lineHeight: 40,
+                    textAlign: "center"
                   }}
                 >
-                  {poem.transliteration}
+                  {poem.original}
                 </Text>
               )}
 
-              <Text
-                style={{
-                  color: theme.textPrimary,
-                  textAlign: "center",
-                  marginTop: 20,
-                  fontSize: 15
-                }}
-              >
-                {poem.translations[language]}
-              </Text>
+              {showTransliteration &&
+                showTransliterationForMode &&
+                !!poem.transliteration && (
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      marginTop: 16,
+                      textAlign: "center",
+                      fontSize: 14
+                    }}
+                  >
+                    {poem.transliteration}
+                  </Text>
+                )}
+
+              {showTranslation && (
+                <Text
+                  style={{
+                    color: theme.textPrimary,
+                    textAlign: "center",
+                    marginTop: 20,
+                    fontSize: 15
+                  }}
+                >
+                  {poem.translations[language]}
+                </Text>
+              )}
             </ScrollView>
 
             {/* Bottom actions */}

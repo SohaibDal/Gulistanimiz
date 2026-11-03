@@ -203,18 +203,35 @@ export default function Poem() {
     .activeOffsetX([-20, 20])
     .failOffsetY([-15, 20])
     .onEnd((e) => {
+      const { translationX } = e;
+
+      // guard: no poems loaded yet
+      if (!poems.length) return;
+
       // Swipe left → next poem (if any)
-      if (e.translationX < -50 && index < poems.length - 1) {
+      if (translationX < -50) {
+        if (index >= poems.length - 1) {
+          // at end: do nothing, avoid flicker
+          return;
+        }
+
         animateOut(() => {
-          setIndex((i) => i + 1);
+          setIndex((i) => Math.min(i + 1, poems.length - 1));
           animateIn();
         });
+
+        return;
       }
 
       // Swipe right → previous poem (if any)
-      if (e.translationX > 50 && index > 0) {
+      if (translationX > 50) {
+        if (index <= 0) {
+          // at start: do nothing, avoid flicker
+          return;
+        }
+
         animateOut(() => {
-          setIndex((i) => i - 1);
+          setIndex((i) => Math.max(i - 1, 0));
           animateIn();
         });
       }

@@ -61,8 +61,11 @@ export default function PoemScreen() {
   const [saved, setSaved] = useState(false);
   const [userName, setUserName] = useState<string>("Guest");
   const [readingMode, setReadingMode] = useState<ReadingMode | null>(null);
-  // Session-only override for the current poem's reading mode. This deliberately
-  // does not persist to storage and is reset when the app reloads.
+  // Per-poem reading mode override for this PoemScreen instance only.
+  // - Stored purely in React state and never written to persistent storage.
+  // - Cleared when the visible poem list changes (e.g. poet/genre/saved view).
+  // - Does not survive leaving this screen: on remount it always starts as null
+  //   so effectiveReadingMode falls back to the global readingMode.
   const [sessionReadingMode, setSessionReadingMode] =
     useState<ReadingMode | null>(null);
 
@@ -144,6 +147,11 @@ export default function PoemScreen() {
 
   /* ---------------- effects ---------------- */
 
+  // Ensure session override starts cleared on first mount of this screen.
+  useEffect(() => {
+    setSessionReadingMode(null);
+  }, []);
+
   // Load poems (home / filtered / saved)
   useEffect(() => {
     async function loadPoems() {
@@ -174,7 +182,8 @@ export default function PoemScreen() {
       }
 
       setIndex(initialIndex);
-      // Reset per-session override when the visible poem list changes
+      // Reset per-session override when the visible poem list changes so that
+      // overrides never leak across different lists or navigation contexts.
       setSessionReadingMode(null);
     }
 
@@ -220,7 +229,7 @@ export default function PoemScreen() {
   }, []);
 
   /*
-    Reading mode → visibility mapping
+    Reading mode 
     - translationOnly: show only translation
     - persianOnly: show only original
     - bilingual: show original + translation; transliteration remains user-togglable
@@ -605,7 +614,6 @@ export default function PoemScreen() {
                       transform: [{ scale: heartScale }]
                     }}
                   >
-                    
                     ♥
                   </Animated.Text>
                 </Pressable>

@@ -5,6 +5,11 @@ import {
   getSavedNotificationTime,
   requestNotificationPermission
 } from "../lib/notifications";
+import {
+  loadReadingMode,
+  saveReadingMode,
+  type ReadingMode
+} from "../lib/storage";
 
 const TIMES = [
   { label: "8:00 AM", value: "08:00" },
@@ -15,17 +20,30 @@ const TIMES = [
   { label: "10:00 PM", value: "22:00" }
 ];
 
+const READING_MODES: { label: string; value: ReadingMode }[] = [
+  { label: "Translation only", value: "translationOnly" },
+  { label: "Persian only", value: "persianOnly" },
+  { label: "Bilingual", value: "bilingual" }
+];
+
 export default function Settings() {
   const [time, setTime] = useState<string | null>(null);
+  const [readingMode, setReadingMode] = useState<ReadingMode | null>(null);
 
   useEffect(() => {
     getSavedNotificationTime().then(setTime);
+    loadReadingMode().then(setReadingMode);
   }, []);
 
   async function setReminder(newTime: string) {
     await requestNotificationPermission();
     await scheduleDailyPoetry(newTime);
     setTime(newTime);
+  }
+
+  async function setReadingModePreference(mode: ReadingMode) {
+    await saveReadingMode(mode);
+    setReadingMode(mode);
   }
 
   return (
@@ -95,6 +113,44 @@ export default function Settings() {
           You’ll receive poetry daily at {time}.
         </Text>
       )}
+
+      {/* Reading mode section */}
+      <View
+        style={{
+          marginTop: 40
+        }}
+      >
+        <Text
+          style={{
+            color: "#e8e6e3",
+            fontSize: 20,
+            marginBottom: 12
+          }}
+        >
+          Reading mode
+        </Text>
+
+        {READING_MODES.map((mode) => {
+          const active = readingMode === mode.value;
+
+          return (
+            <Pressable
+              key={mode.value}
+              onPress={() => setReadingModePreference(mode.value)}
+              style={{ marginBottom: 16 }}
+            >
+              <Text
+                style={{
+                  color: active ? "#b59a5a" : "#ccc",
+                  fontSize: 16
+                }}
+              >
+                {mode.label} {active ? "✓" : ""}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
     </View>
   );
 }

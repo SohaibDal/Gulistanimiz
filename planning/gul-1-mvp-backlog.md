@@ -92,6 +92,12 @@ As a reader, I want to swipe horizontally through full-screen poem cards so that
 
 **Milestone:** `v0.1 MVP`
 
+Notes (v0.1 implementation details):
+- Poem tab now uses `ScreenWrapper` with an animated card that occupies ~80–82% of the viewport height in portrait, with vertical scrolling inside the card when content overflows.
+- Swipe navigation is implemented via `react-native-gesture-handler` pan gesture with horizontal thresholds and a small edge "nudge" animation at the start/end of the list instead of changing index out of range.
+- Current poem index is kept in simple in-memory module state (`lastSessionPoemIndex`) so that navigating away from and back to the Poem tab during a single app session restores the last-read poem (within the currently loaded poem subset). This is intentionally not persisted across app launches.
+- Deep links that provide `poemId` (from Genres/Writers/My Gulistan) still jump to the requested poem within the loaded subset; when both `poemId` and a previous session index exist, `poemId` wins for the initial selection.
+
 Tasks:
 - **T1.1.a – Define poem card layout**  
   - Type: `task`, `area:reading`  

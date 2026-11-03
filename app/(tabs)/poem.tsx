@@ -229,7 +229,7 @@ export default function PoemScreen() {
   }, []);
 
   /*
-    Reading mode → visibility mapping
+    Reading mode 
     - translationOnly: show only translation
     - persianOnly: show only original
     - bilingual: show original + translation; transliteration remains user-togglable
@@ -614,9 +614,6 @@ export default function PoemScreen() {
                       transform: [{ scale: heartScale }]
                     }}
                   >
-                    
-                    
-                    
                     ♥
                   </Animated.Text>
                 </Pressable>

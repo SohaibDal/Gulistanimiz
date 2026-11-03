@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import {
   View,
   Text,
@@ -11,11 +11,12 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { router, useLocalSearchParams } from "expo-router";
 import * as Sharing from "expo-sharing";
 
-import { loadItem } from "../../lib/storage";
+import { loadItem, loadReadingMode, type ReadingMode } from "../../lib/storage";
 import {
   getAllPoems,
   getPoemsByPoet,
-  getPoemsByGenre
+  getPoemsByGenre,
+  type Poem
 } from "../../lib/poems";
 import {
   isPoemSaved,
@@ -27,7 +28,9 @@ import { useTheme } from "../../lib/theme-context";
 import { supabase } from "../../lib/supabase";
 import { getGreeting } from "../../lib/greeting";
 import ScreenWrapper from "../../components/ScreenWrapper";
-import { ThemedText } from "../../components/themed-text";
+
+// In-memory session state for the poem tab only (no cross-launch persistence)
+let lastSessionPoemIndex: number | null = null;
 
 export default function Poem() {
   const { theme } = useTheme();
@@ -50,35 +53,45 @@ export default function Poem() {
   }
 
   /* ------------------ state ------------------ */
-  const [poems, setPoems] = useState<any[]>([]);
+  const [poems, setPoems] = useState<Poem[]>([]);
   const [index, setIndex] = useState(0);
   const [language, setLanguage] = useState<"en" | "tr">("en");
   const [showTransliteration, setShowTransliteration] = useState(true);
   const [saved, setSaved] = useState(false);
   const [userName, setUserName] = useState<string>("Guest");
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const initialFiltersRef = useRef<{ poetId?: string; genre?: string; source?: string } | null>(null);
+  const [readingMode, setReadingMode] = useState<ReadingMode | null>(null);
+  // Per-poem reading mode override for this Poem screen instance only.
+  // - Stored purely in React state and never written to persistent storage.
+  // - Cleared when the visible poem list changes (e.g. poet/genre/saved view).
+  // - Does not survive leaving this screen: on remount it always starts as null
+  //   so effectiveReadingMode falls back to the global readingMode.
+  const [sessionReadingMode, setSessionReadingMode] =
+    useState<ReadingMode | null>(null);
 
   const poem = poems[index];
-  const poet = poem ? poets.find((p) => p.id === poem.poetId) : null;
+  const poet = useMemo(
+    () => (poem ? poets.find((p) => p.id === poem.poetId) : null),
+    [poem]
+  );
+
+  const isEdge = poems.length <= 1 || index === 0 || index === poems.length - 1;
 
   /* ---------------- animations ---------------- */
   const fade = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(12)).current;
   const heartScale = useRef(new Animated.Value(1)).current;
+  const edgeNudge = useRef(new Animated.Value(0)).current;
 
   function animateIn() {
     Animated.parallel([
       Animated.timing(fade, {
         toValue: 1,
-        duration: 420,
+        duration: 260,
         useNativeDriver: true
       }),
       Animated.timing(translateY, {
         toValue: 0,
-        duration: 420,
+        duration: 260,
         useNativeDriver: true
       })
     ]).start();
@@ -92,7 +105,7 @@ export default function Poem() {
         useNativeDriver: true
       }),
       Animated.timing(translateY, {
-        toValue: 12,
+        toValue: 8,
         duration: 140,
         useNativeDriver: true
       })
@@ -114,57 +127,70 @@ export default function Poem() {
     ]).start();
   }
 
+  function animateEdgeNudge(direction: "left" | "right") {
+    const sign = direction === "left" ? -1 : 1;
+
+    Animated.sequence([
+      Animated.timing(edgeNudge, {
+        toValue: 8 * sign,
+        duration: 90,
+        useNativeDriver: true
+      }),
+      Animated.timing(edgeNudge, {
+        toValue: 0,
+        duration: 120,
+        useNativeDriver: true
+      })
+    ]).start();
+  }
+
   /* ---------------- effects ---------------- */
+
+  // Ensure session override starts cleared on first mount of this screen.
+  useEffect(() => {
+    setSessionReadingMode(null);
+  }, []);
 
   // Load poems (home / filtered / saved)
   useEffect(() => {
-    async function loadPoems() {
-      setIsLoading(true);
-      setError(null);
+    async function loadPoemsEffect() {
+      let loaded: Poem[] = [];
 
-      try {
-        if (source === "saved") {
-          const savedPoems = await getSavedPoemsFull();
-          setPoems(savedPoems);
-        } else if (poetId) {
-          setPoems(getPoemsByPoet(poetId));
-        } else if (genre) {
-          setPoems(getPoemsByGenre(genre));
-        } else {
-          setPoems(shuffle(getAllPoems()));
-        }
-      } catch (e) {
-        setError(
-          "We couldn’t load your poems right now. Please check your connection and try again."
-        );
-        setPoems([]);
-      } finally {
-        setIsLoading(false);
+      if (source === "saved") {
+        loaded = await getSavedPoemsFull();
+      } else if (poetId) {
+        loaded = getPoemsByPoet(poetId);
+      } else if (genre) {
+        loaded = getPoemsByGenre(genre);
+      } else {
+        loaded = shuffle(getAllPoems());
       }
+
+      setPoems(loaded);
+
+      // Decide initial index based on params / session state
+      let initialIndex = 0;
+
+      if (poemId) {
+        const idx = loaded.findIndex((p) => p.id === Number(poemId));
+        if (idx >= 0) {
+          initialIndex = idx;
+        }
+      } else if (
+        lastSessionPoemIndex !== null &&
+        lastSessionPoemIndex < loaded.length
+      ) {
+        initialIndex = lastSessionPoemIndex;
+      }
+
+      setIndex(initialIndex);
+      // Reset per-session override when the visible poem list changes so that
+      // overrides never leak across different lists or navigation contexts.
+      setSessionReadingMode(null);
     }
 
-    loadPoems();
-  }, [source, poetId, genre]);
-
-  // Track initial filters so we only reset index when filter context truly changes.
-  useEffect(() => {
-    const currentFilters = { poetId, genre, source };
-
-    if (!initialFiltersRef.current) {
-      initialFiltersRef.current = currentFilters;
-      return;
-    }
-
-    const filtersChanged =
-      initialFiltersRef.current.poetId !== poetId ||
-      initialFiltersRef.current.genre !== genre ||
-      initialFiltersRef.current.source !== source;
-
-    if (filtersChanged) {
-      initialFiltersRef.current = currentFilters;
-      setIndex(0);
-    }
-  }, [poetId, genre, source]);
+    loadPoemsEffect();
+  }, [source, poetId, genre, poemId]);
 
   // Preferences
   useEffect(() => {
@@ -172,6 +198,7 @@ export default function Poem() {
     loadItem("transliteration").then(
       (t) => t !== null && setShowTransliteration(t)
     );
+    loadReadingMode().then((mode) => setReadingMode(mode ?? null));
   }, []);
 
   // Saved state
@@ -180,12 +207,10 @@ export default function Poem() {
     isPoemSaved(poem.id).then(setSaved);
   }, [poem?.id]);
 
-  // Jump to poem when opened from My Gulistan
+  // Keep last visible index in memory for this session
   useEffect(() => {
-    if (!poemId || poems.length === 0) return;
-    const idx = poems.findIndex((p) => p.id === Number(poemId));
-    if (idx >= 0) setIndex(idx);
-  }, [poemId, poems]);
+    lastSessionPoemIndex = index;
+  }, [index]);
 
   // Initial animation
   useEffect(() => {
@@ -205,171 +230,121 @@ export default function Poem() {
     });
   }, []);
 
+  /*
+    Reading mode 
+    - translationOnly: show only translation
+    - persianOnly: show only original
+    - bilingual: show original + translation; transliteration remains user-togglable
+  */
+  const effectiveReadingMode = sessionReadingMode ?? readingMode;
+
+  const showOriginal =
+    effectiveReadingMode === "persianOnly" ||
+    effectiveReadingMode === "bilingual" ||
+    effectiveReadingMode === null;
+
+  const showTranslation =
+    effectiveReadingMode === "translationOnly" ||
+    effectiveReadingMode === "bilingual" ||
+    effectiveReadingMode === null;
+
+  const showTransliterationForMode =
+    effectiveReadingMode === "bilingual" || effectiveReadingMode === null;
+
   /* ---------------- gestures ---------------- */
-  // Horizontal pan gesture: only react to clear left / right swipes and
-  // ignore mostly vertical movement so the card feels stable.
   const panGesture = Gesture.Pan()
     .activeOffsetX([-20, 20])
-    .failOffsetY([-15, 20])
+    .failOffsetY([-12, 12])
     .onEnd((e) => {
-      const { translationX } = e;
-
-      // guard: no poems loaded yet
       if (!poems.length) return;
 
-      // Swipe left → next poem (if any)
-      if (translationX < -50) {
-        if (index >= poems.length - 1) {
-          // at end: do nothing, avoid flicker
-          return;
+      const { translationX, velocityX } = e;
+      const swipePower = translationX + velocityX * 0.05;
+
+      const threshold = 50;
+
+      // Next
+      if (swipePower < -threshold) {
+        if (index < poems.length - 1) {
+          animateOut(() => {
+            setIndex((i) => Math.min(i + 1, poems.length - 1));
+            animateIn();
+          });
+        } else {
+          animateEdgeNudge("left");
         }
-
-        animateOut(() => {
-          setIndex((i) => Math.min(i + 1, poems.length - 1));
-          animateIn();
-        });
-
-        return;
       }
 
-      // Swipe right → previous poem (if any)
-      if (translationX > 50) {
-        if (index <= 0) {
-          // at start: do nothing, avoid flicker
-          return;
+      // Previous
+      if (swipePower > threshold) {
+        if (index > 0) {
+          animateOut(() => {
+            setIndex((i) => Math.max(i - 1, 0));
+            animateIn();
+          });
+        } else {
+          animateEdgeNudge("right");
         }
-
-        animateOut(() => {
-          setIndex((i) => Math.max(i - 1, 0));
-          animateIn();
-        });
       }
     });
 
-  /* ---------------- derived helpers ---------------- */
-  const poemTitle = poem
-    ? (poem.original as string).split("\n")[0]
-    : "";
-
-  const poemBodyOriginal = poem
-    ? (poem.original as string).split("\n").slice(1).join("\n")
-    : "";
-
-  /* ---------------- loading, empty & error states ---------------- */
-  const renderLoading = () => (
-    <ScreenWrapper padded={false}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        <ThemedText style={{ color: theme.textMuted }}>
-          Loading poetry…
-        </ThemedText>
-      </View>
-    </ScreenWrapper>
-  );
-
-  const renderEmpty = () => (
-    <ScreenWrapper padded={false}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          paddingHorizontal: 24
-        }}
-      >
-        <ThemedText
-          type="subtitle"
+  /* ---------------- empty / loading ---------------- */
+  if (!poems.length) {
+    return (
+      <ScreenWrapper>
+        <View
           style={{
-            color: theme.textPrimary,
-            textAlign: "center",
-            marginBottom: 8
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
-          No poems to show.
-        </ThemedText>
-        <ThemedText
-          style={{
-            color: theme.textMuted,
-            fontSize: 14,
-            textAlign: "center"
-          }}
-        >
-          {source === "saved"
-            ? "You haven’t saved any poems yet. Save a poem to see it here."
-            : "There aren’t any poems to read right now. Try a different filter or come back later."}
-        </ThemedText>
-      </View>
-    </ScreenWrapper>
-  );
-
-  const renderError = () => (
-    <ScreenWrapper padded={false}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          paddingHorizontal: 24
-        }}
-      >
-        <ThemedText
-          type="subtitle"
-          style={{
-            color: theme.textPrimary,
-            textAlign: "center",
-            marginBottom: 8
-          }}
-        >
-          Poems are taking a pause
-        </ThemedText>
-        <ThemedText
-          style={{
-            color: theme.textMuted,
-            fontSize: 14,
-            textAlign: "center",
-            marginBottom: 4
-          }}
-        >
-          {error ||
-            "We couldn’t load your poems right now. Please check your connection and try again."}
-        </ThemedText>
-        <ThemedText
-          style={{
-            color: theme.textMuted,
-            fontSize: 12,
-            textAlign: "center"
-          }}
-        >
-          You can pull to refresh or try again in a moment.
-        </ThemedText>
-      </View>
-    </ScreenWrapper>
-  );
-
-  if (isLoading) {
-    return renderLoading();
+          <Text
+            style={{
+              color: theme.textMuted,
+              fontSize: 16,
+              textAlign: "center"
+            }}
+          >
+            No poems to show right now.
+          </Text>
+          <Text
+            style={{
+              color: theme.textSecondary,
+              fontSize: 13,
+              textAlign: "center",
+              marginTop: 6
+            }}
+          >
+            Try changing your filter or saving a few favorites first.
+          </Text>
+        </View>
+      </ScreenWrapper>
+    );
   }
 
-  if (error) {
-    return renderError();
+  if (!poem || !poet) {
+    return (
+      <ScreenWrapper>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Text
+            style={{
+              color: theme.textMuted,
+              fontSize: 16
+            }}
+          >
+            Loading poetry…
+          </Text>
+        </View>
+      </ScreenWrapper>
+    );
   }
-
-  if (!poems.length || !poem || !poet) {
-    return renderEmpty();
-  }
-
-  const spacing = {
-    xs: 4,
-    sm: 8,
-    md: 12,
-    lg: 16,
-    xl: 24
-  } as const;
 
   /* ---------------- render ---------------- */
   return (
@@ -378,18 +353,14 @@ export default function Poem() {
         <View
           style={{
             flex: 1,
-            paddingHorizontal: spacing.xl,
-            paddingVertical: spacing.xl
+            justifyContent: "center",
+            paddingHorizontal: 20,
+            paddingVertical: 32
           }}
         >
           {/* Greeting / header */}
-          <View
-            style={{
-              marginBottom: spacing.lg,
-              alignItems: "center"
-            }}
-          >
-            <ThemedText
+          <View style={{ marginBottom: 18 }}>
+            <Text
               style={{
                 color: theme.textMuted,
                 fontSize: 14,
@@ -398,229 +369,251 @@ export default function Poem() {
               }}
             >
               {getGreeting()}, {userName}
-            </ThemedText>
+            </Text>
 
-            <ThemedText
+            <Text
               style={{
                 color: theme.textSecondary,
                 fontSize: 12,
                 textAlign: "center",
-                marginTop: spacing.xs,
+                marginTop: 4,
                 fontStyle: "italic"
               }}
             >
               May a verse find you today...
-            </ThemedText>
+            </Text>
           </View>
 
-          {/* Full-screen poem card */}
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <Animated.View
+          <Animated.View
+            style={{
+              opacity: fade,
+              transform: [
+                { translateY },
+                { translateX: edgeNudge }
+              ],
+              backgroundColor: theme.cardBackground,
+              borderRadius: 26,
+              padding: 22,
+              borderWidth: 1,
+              borderColor: theme.cardBorder,
+              maxHeight: "82%"
+            }}
+          >
+            {/* Top controls */}
+            <View
               style={{
-                opacity: fade,
-                transform: [{ translateY }],
-                backgroundColor: theme.cardBackground,
-                borderRadius: 26,
-                padding: spacing.xl,
-                borderWidth: 1,
-                borderColor: theme.cardBorder,
-                flex: 1
+                width: "100%",
+                marginBottom: 8
               }}
             >
-              {/* Card header / controls */}
               <View
                 style={{
-                  width: "100%",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: spacing.md
+                  alignItems: "center"
                 }}
               >
-                <View style={{ flexDirection: "row" }}>
-                  <Pressable onPress={() => setLanguage("en")}>
-                    <ThemedText
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center"
+                  }}
+                >
+                  <Pressable
+                    hitSlop={8}
+                    onPress={() => setLanguage("en")}
+                  >
+                    <Text
                       style={{
                         color:
                           language === "en"
                             ? theme.accent
                             : theme.textMuted,
-                        marginRight: spacing.md
+                        marginRight: 14,
+                        fontSize: 13
                       }}
                     >
                       EN
-                    </ThemedText>
+                    </Text>
                   </Pressable>
-                  <Pressable onPress={() => setLanguage("tr")}>
-                    <ThemedText
+                  <Pressable
+                    hitSlop={8}
+                    onPress={() => setLanguage("tr")}
+                  >
+                    <Text
                       style={{
                         color:
                           language === "tr"
                             ? theme.accent
-                            : theme.textMuted
+                            : theme.textMuted,
+                        fontSize: 13
                       }}
                     >
                       TR
-                    </ThemedText>
+                    </Text>
                   </Pressable>
                 </View>
 
                 <Pressable
+                  hitSlop={8}
                   onPress={() =>
                     setShowTransliteration(!showTransliteration)
                   }
                 >
-                  <ThemedText
+                  <Text
                     style={{
                       color: showTransliteration
                         ? theme.accent
-                        : theme.textMuted
+                        : theme.textMuted,
+                      fontSize: 12
                     }}
                   >
                     Transliteration
-                  </ThemedText>
+                  </Text>
                 </Pressable>
               </View>
 
-              {/* Reminder link */}
-              <Pressable
-                onPress={() => router.push("/settings")}
-                style={{ marginBottom: spacing.sm }}
+              {/* Reading mode override: session-only per-poem control */}
+              <View
+                style={{
+                  marginTop: 6,
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
               >
-                <ThemedText
-                  type="link"
+                {([
+                  ["persianOnly", "Fa"] as const,
+                  ["bilingual", "Bi"] as const,
+                  ["translationOnly", "En"] as const
+                ] as const).map(([mode, label]) => {
+                  const isSelected = effectiveReadingMode === mode;
+                  return (
+                    <Pressable
+                      key={mode}
+                      hitSlop={8}
+                      onPress={() =>
+                        setSessionReadingMode(
+                          isSelected ? null : mode
+                        )
+                      }
+                      style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 4,
+                        borderRadius: 999,
+                        marginHorizontal: 4,
+                        backgroundColor: isSelected
+                          ? theme.accentSoft
+                          : "transparent",
+                        borderWidth: 1,
+                        borderColor: isSelected
+                          ? theme.accent
+                          : theme.cardBorder
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: isSelected
+                            ? theme.accent
+                            : theme.textMuted,
+                          fontSize: 11,
+                          letterSpacing: 0.5
+                        }}
+                      >
+                        {label}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+
+            {/* Daily reminder link */}
+            <Pressable
+              onPress={() => router.push("/settings")}
+              style={{ marginBottom: 12 }}
+            >
+              <Text
+                style={{
+                  color: theme.textMuted,
+                  fontSize: 12,
+                  textAlign: "right"
+                }}
+              >
+                Daily Poetry Reminder
+              </Text>
+            </Pressable>
+
+            {/* Poem content */}
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 24 }}
+            >
+              {showOriginal && (
+                <Text
                   style={{
-                    color: theme.textMuted,
+                    color: theme.textPrimary,
+                    fontSize: 26,
+                    lineHeight: 40,
                     textAlign: "center"
                   }}
                 >
-                  Daily Poetry Reminder
-                </ThemedText>
-              </Pressable>
+                  {poem.original}
+                </Text>
+              )}
 
-              {/* Poem content */}
-              <View style={{ flex: 1, marginTop: spacing.sm }}>
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: spacing.xl }}
+              {showTransliteration &&
+                showTransliterationForMode &&
+                !!poem.transliteration && (
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      marginTop: 16,
+                      textAlign: "center",
+                      fontSize: 14
+                    }}
+                  >
+                    {poem.transliteration}
+                  </Text>
+                )}
+
+              {showTranslation && (
+                <Text
+                  style={{
+                    color: theme.textPrimary,
+                    textAlign: "center",
+                    marginTop: 20,
+                    fontSize: 15
+                  }}
                 >
-                  {/* Title / first line */}
-                  <ThemedText
-                    type="poemTitle"
-                    style={{
-                      color: theme.textPrimary,
-                      marginBottom: poemBodyOriginal ? spacing.md : spacing.lg
-                    }}
-                  >
-                    {poemTitle}
-                  </ThemedText>
+                  {poem.translations[language]}
+                </Text>
+              )}
+            </ScrollView>
 
-                  {/* Remaining original body, if any */}
-                  {poemBodyOriginal ? (
-                    <ThemedText
-                      type="poemBody"
-                      style={{
-                        color: theme.textPrimary,
-                        marginBottom: spacing.lg
-                      }}
-                    >
-                      {poemBodyOriginal}
-                    </ThemedText>
-                  ) : null}
-
-                  {/* Transliteration */}
-                  {showTransliteration && poem.transliteration && (
-                    <ThemedText
-                      type="poemTransliteration"
-                      style={{
-                        color: theme.textSecondary,
-                        marginVertical: spacing.md
-                      }}
-                    >
-                      {poem.transliteration}
-                    </ThemedText>
-                  )}
-
-                  {/* Translation */}
-                  <ThemedText
-                    type="poemTranslation"
-                    style={{
-                      color: theme.textPrimary,
-                      marginTop: spacing.md,
-                      marginBottom: spacing.xl
-                    }}
-                  >
-                    {poem.translations[language]}
-                  </ThemedText>
-                </ScrollView>
-              </View>
-
-              {/* Actions / footer */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: spacing.sm
-                }}
-              >
+            {/* Bottom actions */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: 8
+              }}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Pressable
                   onPress={async () => {
                     animateHeart();
                     const updated = await toggleSavedPoem(poem.id);
                     setSaved(updated.includes(poem.id));
                   }}
-                  style={{ marginHorizontal: spacing.lg }}
+                  style={{ marginRight: 24 }}
+                  hitSlop={8}
                 >
                   <Animated.Text
                     style={{
-                      color: saved ? "#e63946" : theme.textMuted,
+                      color: saved ? theme.danger : theme.textMuted,
                       fontSize: 22,
                       transform: [{ scale: heartScale }]
                     }}
                   >
-                    ♥
-                  </Animated.Text>
-                </Pressable>
-
-                <Pressable
-                  onPress={async () => {
-                    const text = `${poem.original}\n\n${poem.translations[language]}\n\n— ${poet.name}\nGulistanimiz`;
-                    try {
-                      // Web share uses the native navigator API; native uses expo-sharing.
-                      if (Platform.OS === "web" && (navigator as any)?.share) {
-                        await (navigator as any).share({ text });
-                      } else {
-                        await Sharing.shareAsync(
-                          "data:text/plain;charset=utf-8," +
-                            encodeURIComponent(text)
-                        );
-                      }
-                    } catch {}
-                  }}
-                  style={{ marginHorizontal: spacing.lg }}
-                >
-                  <Text
-                    style={{ color: theme.textMuted, fontSize: 22 }}
-                  >
-                    ⤴︎
-                  </Text>
-                </Pressable>
-              </View>
-
-              <ThemedText
-                type="poemMeta"
-                style={{
-                  color: theme.textMuted,
-                  textAlign: "center"
-                }}
-              >
-                — {poet.name}
-              </ThemedText>
-            </Animated.View>
-          </View>
-        </View>
-      </GestureDetector>
-    </ScreenWrapper>
-  );
-}
+                    

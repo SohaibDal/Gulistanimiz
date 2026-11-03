@@ -61,6 +61,10 @@ export default function PoemScreen() {
   const [saved, setSaved] = useState(false);
   const [userName, setUserName] = useState<string>("Guest");
   const [readingMode, setReadingMode] = useState<ReadingMode | null>(null);
+  // Session-only override for the current poem's reading mode. This deliberately
+  // does not persist to storage and is reset when the app reloads.
+  const [sessionReadingMode, setSessionReadingMode] =
+    useState<ReadingMode | null>(null);
 
   const poem = poems[index];
   const poet = useMemo(
@@ -170,6 +174,8 @@ export default function PoemScreen() {
       }
 
       setIndex(initialIndex);
+      // Reset per-session override when the visible poem list changes
+      setSessionReadingMode(null);
     }
 
     loadPoems();
@@ -219,18 +225,20 @@ export default function PoemScreen() {
     - persianOnly: show only original
     - bilingual: show original + translation; transliteration remains user-togglable
   */
+  const effectiveReadingMode = sessionReadingMode ?? readingMode;
+
   const showOriginal =
-    readingMode === "persianOnly" ||
-    readingMode === "bilingual" ||
-    readingMode === null;
+    effectiveReadingMode === "persianOnly" ||
+    effectiveReadingMode === "bilingual" ||
+    effectiveReadingMode === null;
 
   const showTranslation =
-    readingMode === "translationOnly" ||
-    readingMode === "bilingual" ||
-    readingMode === null;
+    effectiveReadingMode === "translationOnly" ||
+    effectiveReadingMode === "bilingual" ||
+    effectiveReadingMode === null;
 
   const showTransliterationForMode =
-    readingMode === "bilingual" || readingMode === null;
+    effectiveReadingMode === "bilingual" || effectiveReadingMode === null;
 
   /* ---------------- gestures ---------------- */
   const panGesture = Gesture.Pan()
@@ -384,63 +392,128 @@ export default function PoemScreen() {
             <View
               style={{
                 width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
                 marginBottom: 8
               }}
             >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center"
+                  }}
+                >
+                  <Pressable
+                    hitSlop={8}
+                    onPress={() => setLanguage("en")}
+                  >
+                    <Text
+                      style={{
+                        color:
+                          language === "en"
+                            ? theme.accent
+                            : theme.textMuted,
+                        marginRight: 14,
+                        fontSize: 13
+                      }}
+                    >
+                      EN
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    hitSlop={8}
+                    onPress={() => setLanguage("tr")}
+                  >
+                    <Text
+                      style={{
+                        color:
+                          language === "tr"
+                            ? theme.accent
+                            : theme.textMuted,
+                        fontSize: 13
+                      }}
+                    >
+                      TR
+                    </Text>
+                  </Pressable>
+                </View>
+
                 <Pressable
                   hitSlop={8}
-                  onPress={() => setLanguage("en")}
+                  onPress={() =>
+                    setShowTransliteration(!showTransliteration)
+                  }
                 >
                   <Text
                     style={{
-                      color:
-                        language === "en"
-                          ? theme.accent
-                          : theme.textMuted,
-                      marginRight: 14,
-                      fontSize: 13
+                      color: showTransliteration
+                        ? theme.accent
+                        : theme.textMuted,
+                      fontSize: 12
                     }}
                   >
-                    EN
-                  </Text>
-                </Pressable>
-                <Pressable
-                  hitSlop={8}
-                  onPress={() => setLanguage("tr")}
-                >
-                  <Text
-                    style={{
-                      color:
-                        language === "tr"
-                          ? theme.accent
-                          : theme.textMuted,
-                      fontSize: 13
-                    }}
-                  >
-                    TR
+                    Transliteration
                   </Text>
                 </Pressable>
               </View>
 
-              <Pressable
-                hitSlop={8}
-                onPress={() => setShowTransliteration(!showTransliteration)}
+              {/* Reading mode override: session-only per-poem control */}
+              <View
+                style={{
+                  marginTop: 6,
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
               >
-                <Text
-                  style={{
-                    color: showTransliteration
-                      ? theme.accent
-                      : theme.textMuted,
-                    fontSize: 12
-                  }}
-                >
-                  Transliteration
-                </Text>
-              </Pressable>
+                {([
+                  ["persianOnly", "Fa"] as const,
+                  ["bilingual", "Bi"] as const,
+                  ["translationOnly", "En"] as const
+                ] as const).map(([mode, label]) => {
+                  const isSelected = effectiveReadingMode === mode;
+                  return (
+                    <Pressable
+                      key={mode}
+                      hitSlop={8}
+                      onPress={() =>
+                        setSessionReadingMode(
+                          isSelected ? null : mode
+                        )
+                      }
+                      style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 4,
+                        borderRadius: 999,
+                        marginHorizontal: 4,
+                        backgroundColor: isSelected
+                          ? theme.accentSoft
+                          : "transparent",
+                        borderWidth: 1,
+                        borderColor: isSelected
+                          ? theme.accent
+                          : theme.cardBorder
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: isSelected
+                            ? theme.accent
+                            : theme.textMuted,
+                          fontSize: 11,
+                          letterSpacing: 0.5
+                        }}
+                      >
+                        {label}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
             </View>
 
             {/* Daily reminder link */}
@@ -532,6 +605,7 @@ export default function PoemScreen() {
                       transform: [{ scale: heartScale }]
                     }}
                   >
+                    
                     ♥
                   </Animated.Text>
                 </Pressable>

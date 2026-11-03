@@ -1,11 +1,13 @@
 import poems from "../data/poems.json";
 import poets from "../data/poets.json";
 
-export function getAllPoems() {
+export type Poem = (typeof poems)[number];
+
+export function getAllPoems(): Poem[] {
   return poems;
 }
 
-export function getPoemsByPoet(poetId: string) {
+export function getPoemsByPoet(poetId: string): Poem[] {
   return poems.filter((p) => p.poetId === poetId);
 }
 
@@ -16,7 +18,7 @@ export function getPoetsWithCounts() {
   });
 }
 
-export function getPoemsByGenre(genre: string) {
+export function getPoemsByGenre(genre: string): Poem[] {
   return poems.filter((p) => p.genre === genre);
 }
 

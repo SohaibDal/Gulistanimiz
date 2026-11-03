@@ -4,7 +4,6 @@ import {
   Text,
   Pressable,
   Animated,
-  Image,
   Platform,
   ScrollView
 } from "react-native";
@@ -27,6 +26,7 @@ import poets from "../../data/poets.json";
 import { useTheme } from "../../lib/theme-context";
 import { supabase } from "../../lib/supabase";
 import { getGreeting } from "../../lib/greeting";
+import ScreenWrapper from "../../components/ScreenWrapper";
 
 export default function Poem() {
   const { theme } = useTheme();
@@ -55,7 +55,9 @@ export default function Poem() {
   const [showTransliteration, setShowTransliteration] = useState(true);
   const [saved, setSaved] = useState(false);
   const [userName, setUserName] = useState<string>("Guest");
+  const [isLoading, setIsLoading] = useState(true);
 
+  const initialFiltersRef = useRef<{ poetId?: string; genre?: string; source?: string } | null>(null);
 
   const poem = poems[index];
   const poet = poem ? poets.find((p) => p.id === poem.poetId) : null;
@@ -115,9 +117,11 @@ export default function Poem() {
   // Load poems (home / filtered / saved)
   useEffect(() => {
     async function loadPoems() {
+      setIsLoading(true);
+
       if (source === "saved") {
-        const saved = await getSavedPoemsFull();
-        setPoems(saved);
+        const savedPoems = await getSavedPoemsFull();
+        setPoems(savedPoems);
       } else if (poetId) {
         setPoems(getPoemsByPoet(poetId));
       } else if (genre) {
@@ -125,14 +129,31 @@ export default function Poem() {
       } else {
         setPoems(shuffle(getAllPoems()));
       }
+
+      setIsLoading(false);
     }
 
     loadPoems();
   }, [source, poetId, genre]);
 
-  // Reset index when filter changes
+  // Track initial filters so we only reset index when filter context truly changes.
   useEffect(() => {
-    setIndex(0);
+    const currentFilters = { poetId, genre, source };
+
+    if (!initialFiltersRef.current) {
+      initialFiltersRef.current = currentFilters;
+      return;
+    }
+
+    const filtersChanged =
+      initialFiltersRef.current.poetId !== poetId ||
+      initialFiltersRef.current.genre !== genre ||
+      initialFiltersRef.current.source !== source;
+
+    if (filtersChanged) {
+      initialFiltersRef.current = currentFilters;
+      setIndex(0);
+    }
   }, [poetId, genre, source]);
 
   // Preferences
@@ -160,6 +181,7 @@ export default function Poem() {
   useEffect(() => {
     animateIn();
   }, []);
+
   // load user once
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -174,239 +196,348 @@ export default function Poem() {
   }, []);
 
   /* ---------------- gestures ---------------- */
-  const panGesture = Gesture.Pan().activeOffsetX([-20, 20]).failOffsetY([-15, 20]).onEnd((e) => {
-    if (e.translationX < -50 && index < poems.length - 1) {
-      animateOut(() => {
-        setIndex((i) => i + 1);
-        animateIn();
-      });
-    }
+  // Horizontal pan gesture: only react to clear left / right swipes and
+  // ignore mostly vertical movement so the card feels stable.
+  const panGesture = Gesture.Pan()
+    .activeOffsetX([-20, 20])
+    .failOffsetY([-15, 20])
+    .onEnd((e) => {
+      // Swipe left → next poem (if any)
+      if (e.translationX < -50 && index < poems.length - 1) {
+        animateOut(() => {
+          setIndex((i) => i + 1);
+          animateIn();
+        });
+      }
 
-    if (e.translationX > 50 && index > 0) {
-      animateOut(() => {
-        setIndex((i) => i - 1);
-        animateIn();
-      });
-    }
-  });
+      // Swipe right → previous poem (if any)
+      if (e.translationX > 50 && index > 0) {
+        animateOut(() => {
+          setIndex((i) => i - 1);
+          animateIn();
+        });
+      }
+    });
 
-  /* ---------------- loading fallback ---------------- */
-  if (!poem || !poet) {
-    return (
+  /* ---------------- derived helpers ---------------- */
+  const poemTitle = poem
+    ? (poem.original as string).split("\n")[0]
+    : "";
+
+  const poemBodyOriginal = poem
+    ? (poem.original as string).split("\n").slice(1).join("\n")
+    : "";
+
+  /* ---------------- loading & empty states ---------------- */
+  const renderLoading = () => (
+    <ScreenWrapper padded={false}>
       <View
         style={{
           flex: 1,
-          backgroundColor: theme.background,
           justifyContent: "center",
           alignItems: "center"
         }}
       >
         <Text style={{ color: theme.textMuted }}>Loading poetry…</Text>
       </View>
-    );
-  }
+    </ScreenWrapper>
+  );
 
-  /* ---------------- render ---------------- */
-  return (
-    <GestureDetector gesture={panGesture}>
+  const renderEmpty = () => (
+    <ScreenWrapper padded={false}>
       <View
         style={{
           flex: 1,
           justifyContent: "center",
-          paddingHorizontal: 20
+          alignItems: "center",
+          paddingHorizontal: 24
         }}
       >
-        {/* 🌿 WELCOME UI — ADD THIS BLOCK */}
-        <View style={{ marginBottom: 18 }}>
-          <Text
-            style={{
-              color: theme.textMuted,
-              fontSize: 14,
-              textAlign: "center",
-              letterSpacing: 0.4
-            }}
-          >
-            {getGreeting()}, {userName}
-          </Text>
-
-          <Text
-            style={{
-              color: theme.textSecondary,
-              fontSize: 12,
-              textAlign: "center",
-              marginTop: 4,
-              fontStyle: "italic"
-            }}
-          >
-            May a verse find you today...
-          </Text>
-        </View>
-        
-        <Animated.View
+        <Text
           style={{
-            opacity: fade,
-            transform: [{ translateY }],
-            backgroundColor: theme.cardBackground,
-            borderRadius: 26,
-            padding: 28,
-            borderWidth: 1,
-            borderColor: theme.cardBorder,
-            alignItems: "center",
-            maxHeight: "80%" // 👈 IMPORTANT
+            color: theme.textPrimary,
+            fontSize: 18,
+            textAlign: "center",
+            marginBottom: 8
           }}
         >
-          {/* Controls */}
+          No poems to show.
+        </Text>
+        <Text
+          style={{
+            color: theme.textMuted,
+            fontSize: 14,
+            textAlign: "center"
+          }}
+        >
+          {source === "saved"
+            ? "You haven’t saved any poems yet. Save a poem to see it here."
+            : "Please try a different filter or come back later."}
+        </Text>
+      </View>
+    </ScreenWrapper>
+  );
+
+  if (isLoading) {
+    return renderLoading();
+  }
+
+  if (!poems.length || !poem || !poet) {
+    return renderEmpty();
+  }
+
+  /* ---------------- render ---------------- */
+  return (
+    <ScreenWrapper padded={false}>
+      <GestureDetector gesture={panGesture}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingVertical: 24
+          }}
+        >
+          {/* Greeting / header */}
           <View
             style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginBottom: 16
+              marginBottom: 18,
+              alignItems: "center"
             }}
           >
-            <View style={{ flexDirection: "row" }}>
-              <Pressable onPress={() => setLanguage("en")}>
-                <Text
-                  style={{
-                    color:
-                      language === "en"
-                        ? theme.accent
-                        : theme.textMuted,
-                    marginRight: 14
-                  }}
-                >
-                  EN
-                </Text>
-              </Pressable>
-              <Pressable onPress={() => setLanguage("tr")}>
-                <Text
-                  style={{
-                    color:
-                      language === "tr"
-                        ? theme.accent
-                        : theme.textMuted
-                  }}
-                >
-                  TR
-                </Text>
-              </Pressable>
-            </View>
-
-            <Pressable
-              onPress={() => setShowTransliteration(!showTransliteration)}
-            >
-              <Text
-                style={{
-                  color: showTransliteration
-                    ? theme.accent
-                    : theme.textMuted
-                }}
-              >
-                Transliteration
-              </Text>
-            </Pressable>
-          </View>
-
-          {/* Reminder */}
-          <Pressable onPress={() => router.push("/settings")}>
-            <Text style={{ color: theme.textMuted, marginBottom: 12 }}>
-              Daily Poetry Reminder
-            </Text>
-          </Pressable>
-
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 24 }}
-          >
-            {/* Poem */}
             <Text
               style={{
-                color: theme.textPrimary,
-                fontSize: 28,
-                lineHeight: 44,
-                textAlign: "center"
+                color: theme.textMuted,
+                fontSize: 14,
+                textAlign: "center",
+                letterSpacing: 0.4
               }}
             >
-              {poem.original}
+              {getGreeting()}, {userName}
             </Text>
 
-            {showTransliteration && (
+            <Text
+              style={{
+                color: theme.textSecondary,
+                fontSize: 12,
+                textAlign: "center",
+                marginTop: 4,
+                fontStyle: "italic"
+              }}
+            >
+              May a verse find you today...
+            </Text>
+          </View>
+
+          {/* Full-screen poem card */}
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Animated.View
+              style={{
+                opacity: fade,
+                transform: [{ translateY }],
+                backgroundColor: theme.cardBackground,
+                borderRadius: 26,
+                padding: 24,
+                borderWidth: 1,
+                borderColor: theme.cardBorder,
+                flex: 1
+              }}
+            >
+              {/* Card header / controls */}
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 12
+                }}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <Pressable onPress={() => setLanguage("en")}>
+                    <Text
+                      style={{
+                        color:
+                          language === "en"
+                            ? theme.accent
+                            : theme.textMuted,
+                        marginRight: 14
+                      }}
+                    >
+                      EN
+                    </Text>
+                  </Pressable>
+                  <Pressable onPress={() => setLanguage("tr")}>
+                    <Text
+                      style={{
+                        color:
+                          language === "tr"
+                            ? theme.accent
+                            : theme.textMuted
+                      }}
+                    >
+                      TR
+                    </Text>
+                  </Pressable>
+                </View>
+
+                <Pressable
+                  onPress={() =>
+                    setShowTransliteration(!showTransliteration)
+                  }
+                >
+                  <Text
+                    style={{
+                      color: showTransliteration
+                        ? theme.accent
+                        : theme.textMuted
+                    }}
+                  >
+                    Transliteration
+                  </Text>
+                </Pressable>
+              </View>
+
+              {/* Reminder link */}
+              <Pressable
+                onPress={() => router.push("/settings")}
+                style={{ marginBottom: 8 }}
+              >
+                <Text
+                  style={{
+                    color: theme.textMuted,
+                    textAlign: "center"
+                  }}
+                >
+                  Daily Poetry Reminder
+                </Text>
+              </Pressable>
+
+              {/* Poem content */}
+              <View style={{ flex: 1, marginTop: 8 }}>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 24 }}
+                >
+                  {/* Title / first line */}
+                  <Text
+                    style={{
+                      color: theme.textPrimary,
+                      fontSize: 24,
+                      lineHeight: 32,
+                      textAlign: "center",
+                      marginBottom: poemBodyOriginal ? 12 : 20
+                    }}
+                  >
+                    {poemTitle}
+                  </Text>
+
+                  {/* Remaining original body, if any */}
+                  {poemBodyOriginal ? (
+                    <Text
+                      style={{
+                        color: theme.textPrimary,
+                        fontSize: 18,
+                        lineHeight: 28,
+                        textAlign: "center",
+                        marginBottom: 16
+                      }}
+                    >
+                      {poemBodyOriginal}
+                    </Text>
+                  ) : null}
+
+                  {/* Transliteration */}
+                  {showTransliteration && poem.transliteration && (
+                    <Text
+                      style={{
+                        color: theme.textSecondary,
+                        marginVertical: 12,
+                        textAlign: "center"
+                      }}
+                    >
+                      {poem.transliteration}
+                    </Text>
+                  )}
+
+                  {/* Translation */}
+                  <Text
+                    style={{
+                      color: theme.textPrimary,
+                      textAlign: "center",
+                      marginTop: 12,
+                      marginBottom: 24
+                    }}
+                  >
+                    {poem.translations[language]}
+                  </Text>
+                </ScrollView>
+              </View>
+
+              {/* Actions / footer */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 8
+                }}
+              >
+                <Pressable
+                  onPress={async () => {
+                    animateHeart();
+                    const updated = await toggleSavedPoem(poem.id);
+                    setSaved(updated.includes(poem.id));
+                  }}
+                  style={{ marginHorizontal: 24 }}
+                >
+                  <Animated.Text
+                    style={{
+                      color: saved ? "#e63946" : theme.textMuted,
+                      fontSize: 22,
+                      transform: [{ scale: heartScale }]
+                    }}
+                  >
+                    ♥
+                  </Animated.Text>
+                </Pressable>
+
+                <Pressable
+                  onPress={async () => {
+                    const text = `${poem.original}\n\n${poem.translations[language]}\n\n— ${poet.name}\nGulistanimiz`;
+                    try {
+                      // Web share uses the native navigator API; native uses expo-sharing.
+                      if (Platform.OS === "web" && (navigator as any)?.share) {
+                        await (navigator as any).share({ text });
+                      } else {
+                        await Sharing.shareAsync(
+                          "data:text/plain;charset=utf-8," +
+                            encodeURIComponent(text)
+                        );
+                      }
+                    } catch {}
+                  }}
+                  style={{ marginHorizontal: 24 }}
+                >
+                  <Text
+                    style={{ color: theme.textMuted, fontSize: 22 }}
+                  >
+                    ⤴︎
+                  </Text>
+                </Pressable>
+              </View>
+
               <Text
                 style={{
-                  color: theme.textSecondary,
-                  marginVertical: 16,
+                  color: theme.textMuted,
                   textAlign: "center"
                 }}
               >
-                {poem.transliteration}
+                — {poet.name}
               </Text>
-            )}
-
-            <Text
-              style={{
-                color: theme.textPrimary,
-                textAlign: "center",
-                marginVertical: 16,
-                marginBottom: 24
-              }}
-            >
-              {poem.translations[language]}
-            </Text>
-          </ScrollView>
-
-          {/* Actions */}
-          <View style={{ flexDirection: "row" }}>
-            <Pressable
-              onPress={async () => {
-                animateHeart();
-                const updated = await toggleSavedPoem(poem.id);
-                setSaved(updated.includes(poem.id));
-              }}
-              style={{ marginHorizontal: 24 }}
-            >
-              <Animated.Text
-                style={{
-                  color: saved ? "#e63946" : theme.textMuted,
-                  fontSize: 22,
-                  transform: [{ scale: heartScale }]
-                }}
-              >
-                ♥
-              </Animated.Text>
-            </Pressable>
-
-            <Pressable
-              onPress={async () => {
-                const text = `${poem.original}\n\n${poem.translations[language]}\n\n— ${poet.name}\nGulistanimiz`;
-                try {
-                  if (Platform.OS === "web" && navigator.share) {
-                    await navigator.share({ text });
-                  } else {
-                    await Sharing.shareAsync(
-                      "data:text/plain;charset=utf-8," +
-                        encodeURIComponent(text)
-                    );
-                  }
-                } catch {}
-              }}
-              style={{ marginHorizontal: 24 }}
-            >
-              <Text style={{ color: theme.textMuted, fontSize: 22 }}>
-                ⤴︎
-              </Text>
-            </Pressable>
+            </Animated.View>
           </View>
-
-          <Text
-            style={{
-              color: theme.textMuted,
-              marginTop: 20
-            }}
-          >
-            — {poet.name}
-          </Text>
-        </Animated.View>
-      </View>
-    </GestureDetector>
+        </View>
+      </GestureDetector>
+    </ScreenWrapper>
   );
 }

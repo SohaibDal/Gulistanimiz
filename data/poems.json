@@ -1,6 +1,7 @@
 [
   {
     "id": "001",
+    "poem_id": "001",
     "poetId": "hafez",
     "genre": "Ghazal",
     "original": "دل می‌رود ز دستم صاحب‌دلان خدا را\nکس چاره‌ای نمی‌داند دردمندان خدا را",
@@ -13,6 +14,7 @@
   },
   {
     "id": "002",
+    "poem_id": "002",
     "poetId": "rumi",
     "genre": "Rubai",
     "original": "عاشقان چون شمع‌اند در انجمن\nپیش محبوب خویش آمده چو مهمان",
@@ -25,6 +27,7 @@
   },
   {
     "id": "003",
+    "poem_id": "003",
     "poetId": "saadi",
     "genre": "Ghazal",
     "original": "بنی آدم اعضای یک پیکرند\nکه در آفرینش ز یک گوهرند",
@@ -37,6 +40,7 @@
   },
   {
     "id": "004",
+    "poem_id": "004",
     "poetId": "omar-khayyam",
     "genre": "Rubai",
     "original": "با من بنشین به کنار دریا\nتا بنگری آینه‌ی صافیا",
@@ -49,6 +53,7 @@
   },
   {
     "id": "005",
+    "poem_id": "005",
     "poetId": "hafez",
     "genre": "Ghazal",
     "original": "اگر آن ترک شیرازی به دست آرد دل ما را\nبه خال هندویش بخشم سمرقند و بخارا را",
@@ -61,6 +66,7 @@
   },
   {
     "id": "006",
+    "poem_id": "006",
     "poetId": "rumi",
     "genre": "Masnavi",
     "original": "بشنو از نی چون حکایت می‌کند\nاز جدایی‌ها شکایت می‌کند",
@@ -73,6 +79,7 @@
   },
   {
     "id": "007",
+    "poem_id": "007",
     "poetId": "ferdowsi",
     "genre": "Epic",
     "original": "به نام خداوند جان و خرد\nکزین برتر اندیشه برنگذرد",
@@ -85,6 +92,7 @@
   },
   {
     "id": "008",
+    "poem_id": "008",
     "poetId": "saadi",
     "genre": "Ghazal",
     "original": "گلستان سعدی خوش است و بوستان\nلیکن گلستان دل بهتر از هر دو",
@@ -97,6 +105,7 @@
   },
   {
     "id": "009",
+    "poem_id": "009",
     "poetId": "hafez",
     "genre": "Ghazal",
     "original": "شب تاریک و بیم موج و گردابی چنین هایل\nکجا دانند حال ما سبکباران ساحل‌ها",
@@ -109,6 +118,7 @@
   },
   {
     "id": "010",
+    "poem_id": "010",
     "poetId": "nizami",
     "genre": "Epic",
     "original": "عشق آمد و چون خون در رگ‌هایم دوید\nاز خویشتن برون شد، مرا تهی گردانید",
@@ -119,343 +129,368 @@
     },
     "theme": "Love"
   },
-{
-  "id": "011",
-  "poetId": "attar",
-  "genre": "Masnavi",
-  "original": "هفت شهر عشق را عطار گشت\nما هنوز اندر خم یک کوچه‌ایم",
-  "transliteration": "Haft shahr-e eshgh ra Attar gasht\nMa hanooz andar kham-e yek kooche-im",
-  "translations": {
-    "en": "Attar crossed the seven cities of love;\nWe are still caught in the bend of a single alley.",
-    "tr": "Attar aşkın yedi şehrini dolaştı\nBiz hâlâ bir sokağın kıvrımındayız"
+  {
+    "id": "011",
+    "poem_id": "011",
+    "poetId": "attar",
+    "genre": "Masnavi",
+    "original": "هفت شهر عشق را عطار گشت\nما هنوز اندر خم یک کوچه‌ایم",
+    "transliteration": "Haft shahr-e eshgh ra Attar gasht\nMa hanooz andar kham-e yek kooche-im",
+    "translations": {
+      "en": "Attar crossed the seven cities of love;\nWe are still caught in the bend of a single alley.",
+      "tr": "Attar aşkın yedi şehrini dolaştı\nBiz hâlâ bir sokağın kıvrımındayız"
+    },
+    "theme": "Mysticism"
   },
-  "theme": "Mysticism"
-},
-{
-  "id": "012",
-  "poetId": "jami",
-  "genre": "Ghazal",
-  "original": "ای دل اگر عاشقی در پی دلدار باش\nبر در او چون گدا، منتظر یار باش",
-  "transliteration": "Ey del agar asheghi dar pey-e deldar bash\nBar dar-e oo chon gada, montazer-e yar bash",
-  "translations": {
-    "en": "O heart, if you love, follow the Beloved;\nWait at that door like a beggar for the Friend.",
-    "tr": "Ey gönül, âşıksan sevgilinin peşinde ol\nOnun kapısında bir dilenci gibi bekle"
+  {
+    "id": "012",
+    "poem_id": "012",
+    "poetId": "jami",
+    "genre": "Ghazal",
+    "original": "ای دل اگر عاشقی در پی دلدار باش\nبر در او چون گدا، منتظر یار باش",
+    "transliteration": "Ey del agar asheghi dar pey-e deldar bash\nBar dar-e oo chon gada, montazer-e yar bash",
+    "translations": {
+      "en": "O heart, if you love, follow the Beloved;\nWait at that door like a beggar for the Friend.",
+      "tr": "Ey gönül, âşıksan sevgilinin peşinde ol\nOnun kapısında bir dilenci gibi bekle"
+    },
+    "theme": "Love"
   },
-  "theme": "Love"
-},
-{
-  "id": "013",
-  "poetId": "hafez",
-  "genre": "Ghazal",
-  "original": "در ازل پرتو حسنت ز تجلی دم زد\nعشق پیدا شد و آتش به همه عالم زد",
-  "transliteration": "Dar azal partav-e hosnat ze tajalli dam zad\nEshgh peyda shod o atash be hame alam zad",
-  "translations": {
-    "en": "At the dawn of time your beauty flashed its light;\nLove appeared and set the whole world aflame.",
-    "tr": "Ezelde güzelliğinin nuru tecelli etti\nAşk ortaya çıktı ve tüm âlemi ateşe verdi"
+  {
+    "id": "013",
+    "poem_id": "013",
+    "poetId": "hafez",
+    "genre": "Ghazal",
+    "original": "در ازل پرتو حسنت ز تجلی دم زد\nعشق پیدا شد و آتش به همه عالم زد",
+    "transliteration": "Dar azal partav-e hosnat ze tajalli dam zad\nEshgh peyda shod o atash be hame alam zad",
+    "translations": {
+      "en": "At the dawn of time your beauty flashed its light;\nLove appeared and set the whole world aflame.",
+      "tr": "Ezelde güzelliğinin nuru tecelli etti\nAşk ortaya çıktı ve tüm âlemi ateşe verdi"
+    },
+    "theme": "Divine"
   },
-  "theme": "Divine"
-},
-{
-  "id": "014",
-  "poetId": "rumi",
-  "genre": "Masnavi",
-  "original": "دی شیخ با چراغ همی گشت گرد شهر\nکز دیو و دد ملولم و انسانم آرزوست",
-  "transliteration": "Dey sheikh ba cheragh hami gasht gard-e shahr\nKaz div o dad maloolam o insanam arezoo-st",
-  "translations": {
-    "en": "Yesterday a sheikh wandered the city with a lamp,\nSaying: I’m weary of beasts—I seek a human being.",
-    "tr": "Dün şeyh elinde fenerle şehri dolaşıyordu\nİblislerden ve canavarlardan bıktım, insan arıyorum diyordu"
+  {
+    "id": "014",
+    "poem_id": "014",
+    "poetId": "rumi",
+    "genre": "Masnavi",
+    "original": "دی شیخ با چراغ همی گشت گرد شهر\nکز دیو و دد ملولم و انسانم آرزوست",
+    "transliteration": "Dey sheikh ba cheragh hami gasht gard-e shahr\nKaz div o dad maloolam o insanam arezoo-st",
+    "translations": {
+      "en": "Yesterday a sheikh wandered the city with a lamp,\nSaying: I’m weary of beasts—I seek a human being.",
+      "tr": "Dün şeyh elinde fenerle şehri dolaşıyordu\nİblislerden ve canavarlardan bıktım, insan arıyorum diyordu"
+    },
+    "theme": "Humanity"
   },
-  "theme": "Humanity"
-},
-{
-  "id": "015",
-  "poetId": "saadi",
-  "genre": "Ghazal",
-  "original": "تو نیکی می‌کن و در دجله انداز\nکه ایزد در بیابانت دهد باز",
-  "transliteration": "To niki mikon o dar dejleh andaz\nKe Izad dar biyabanat dahad baz",
-  "translations": {
-    "en": "Do good and cast it into the Tigris;\nGod will return it to you in the desert.",
-    "tr": "İyilik yap ve Dicle’ye at\nTanrı onu çölde sana geri verir"
+  {
+    "id": "015",
+    "poem_id": "015",
+    "poetId": "saadi",
+    "genre": "Ghazal",
+    "original": "تو نیکی می‌کن و در دجله انداز\nکه ایزد در بیابانت دهد باز",
+    "transliteration": "To niki mikon o dar dejleh andaz\nKe Izad dar biyabanat dahad baz",
+    "translations": {
+      "en": "Do good and cast it into the Tigris;\nGod will return it to you in the desert.",
+      "tr": "İyilik yap ve Dicle’ye at\nTanrı onu çölde sana geri verir"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "016",
-  "poetId": "omar-khayyam",
-  "genre": "Rubai",
-  "original": "می نوش که عمر جاودانی این است\nخود حاصلت از دور جوانی این است",
-  "transliteration": "May noosh ke omr-e javidani in ast\nKhod haselat az dor-e javani in ast",
-  "translations": {
-    "en": "Drink, for this is the only eternal life;\nAll you keep from youth is this moment.",
-    "tr": "Şarap iç, çünkü ebedi hayat budur\nGençliğinden sana kalan tek şey budur"
+  {
+    "id": "016",
+    "poem_id": "016",
+    "poetId": "omar-khayyam",
+    "genre": "Rubai",
+    "original": "می نوش که عمر جاودانی این است\nخود حاصلت از دور جوانی این است",
+    "transliteration": "May noosh ke omr-e javidani in ast\nKhod haselat az dor-e javani in ast",
+    "translations": {
+      "en": "Drink, for this is the only eternal life;\nAll you keep from youth is this moment.",
+      "tr": "Şarap iç, çünkü ebedi hayat budur\nGençliğinden sana kalan tek şey budur"
+    },
+    "theme": "Philosophy"
   },
-  "theme": "Philosophy"
-},
-{
-  "id": "017",
-  "poetId": "ferdowsi",
-  "genre": "Epic",
-  "original": "توانا بود هر که دانا بود\nز دانش دل پیر برنا بود",
-  "transliteration": "Tavana bovad har ke dana bovad\nZe danesh del-e pir barna bovad",
-  "translations": {
-    "en": "Power belongs to the one who knows;\nThrough knowledge, the old heart becomes young.",
-    "tr": "Bilgili olan güçlüdür\nBilgiyle yaşlı gönül genç olur"
+  {
+    "id": "017",
+    "poem_id": "017",
+    "poetId": "ferdowsi",
+    "genre": "Epic",
+    "original": "توانا بود هر که دانا بود\nز دانش دل پیر برنا بود",
+    "transliteration": "Tavana bovad har ke dana bovad\nZe danesh del-e pir barna bovad",
+    "translations": {
+      "en": "Power belongs to the one who knows;\nThrough knowledge, the old heart becomes young.",
+      "tr": "Bilgili olan güçlüdür\nBilgiyle yaşlı gönül genç olur"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "018",
-  "poetId": "hafez",
-  "genre": "Ghazal",
-  "original": "الا یا ایها الساقی ادر کاسا و ناولها\nکه عشق آسان نمود اول ولی افتاد مشکل‌ها",
-  "transliteration": "Ala ya ayyohas saqi adar kasa va navelha\nKe eshgh asan namood avval vali oftad moshkelha",
-  "translations": {
-    "en": "O cupbearer, pass the wine around;\nLove seemed easy at first, then troubles came.",
-    "tr": "Ey saki, kadehi dolaştır ve sun\nAşk önce kolay göründü ama sonra zorlaştı"
+  {
+    "id": "018",
+    "poem_id": "018",
+    "poetId": "hafez",
+    "genre": "Ghazal",
+    "original": "الا یا ایها الساقی ادر کاسا و ناولها\nکه عشق آسان نمود اول ولی افتاد مشکل‌ها",
+    "transliteration": "Ala ya ayyohas saqi adar kasa va navelha\nKe eshgh asan namood avval vali oftad moshkelha",
+    "translations": {
+      "en": "O cupbearer, pass the wine around;\nLove seemed easy at first, then troubles came.",
+      "tr": "Ey saki, kadehi dolaştır ve sun\nAşk önce kolay göründü ama sonra zorlaştı"
+    },
+    "theme": "Love"
   },
-  "theme": "Love"
-},
-{
-  "id": "019",
-  "poetId": "rumi",
-  "genre": "Masnavi",
-  "original": "این همه گفتیم لیک اندر بسیچ\nبی‌عنایات خدا هیچیم هیچ",
-  "transliteration": "In hame goftim lik andar basich\nBi enayat-e khoda hichim hich",
-  "translations": {
-    "en": "All this we have said amounts to little—\nWithout God’s grace, we are nothing at all.",
-    "tr": "Bunca söz söyledik ama gerçekte\nTanrı’nın lütfu olmadan hiçbiriz"
+  {
+    "id": "019",
+    "poem_id": "019",
+    "poetId": "rumi",
+    "genre": "Masnavi",
+    "original": "این همه گفتیم لیک اندر بسیچ\nبی‌عنایات خدا هیچیم هیچ",
+    "transliteration": "In hame goftim lik andar basich\nBi enayat-e khoda hichim hich",
+    "translations": {
+      "en": "All this we have said amounts to little—\nWithout God’s grace, we are nothing at all.",
+      "tr": "Bunca söz söyledik ama gerçekte\nTanrı’nın lütfu olmadan hiçbiriz"
+    },
+    "theme": "Divine"
   },
-  "theme": "Divine"
-},
-{
-  "id": "020",
-  "poetId": "saadi",
-  "genre": "Ghazal",
-  "original": "به جهان خرم از آنم که جهان خرم از اوست\nعاشقم بر همه عالم که همه عالم از اوست",
-  "transliteration": "Be jahan khorram az anam ke jahan khorram az ost\nAshegham bar hame alam ke hame alam az ost",
-  "translations": {
-    "en": "The world delights me, for it delights through Him;\nI love all the world, for all the world is from Him.",
-    "tr": "Dünya ondan ötürü güzeldir bana\nTüm âlemi severim çünkü hepsi ondandır"
+  {
+    "id": "020",
+    "poem_id": "020",
+    "poetId": "saadi",
+    "genre": "Ghazal",
+    "original": "به جهان خرم از آنم که جهان خرم از اوست\nعاشقم بر همه عالم که همه عالم از اوست",
+    "transliteration": "Be jahan khorram az anam ke jahan khorram az ost\nAshegham bar hame alam ke hame alam az ost",
+    "translations": {
+      "en": "The world delights me, for it delights through Him;\nI love all the world, for all the world is from Him.",
+      "tr": "Dünya ondan ötürü güzeldir bana\nTüm âlemi severim çünkü hepsi ondandır"
+    },
+    "theme": "Divine"
   },
-  "theme": "Divine"
-},
-{
-  "id": "021",
-  "poetId": "omar-khayyam",
-  "genre": "Rubai",
-  "original": "از دی که گذشت هیچ از او یاد مکن\nفردا که نیامده‌ست فریاد مکن",
-  "transliteration": "Az di ke gozasht hich az oo yad makon\nFarda ke nayamade-st faryad makon",
-  "translations": {
-    "en": "Do not grieve for yesterday that has passed,\nDo not cry for tomorrow that has not yet come.",
-    "tr": "Geçmiş gün için yas tutma\nHenüz gelmeyen yarın için feryat etme"
+  {
+    "id": "021",
+    "poem_id": "021",
+    "poetId": "omar-khayyam",
+    "genre": "Rubai",
+    "original": "از دی که گذشت هیچ از او یاد مکن\nفردا که نیامده‌ست فریاد مکن",
+    "transliteration": "Az di ke gozasht hich az oo yad makon\nFarda ke nayamade-st faryad makon",
+    "translations": {
+      "en": "Do not grieve for yesterday that has passed,\nDo not cry for tomorrow that has not yet come.",
+      "tr": "Geçmiş gün için yas tutma\nHenüz gelmeyen yarın için feryat etme"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "022",
-  "poetId": "attar",
-  "genre": "Masnavi",
-  "original": "تو پای به راه در نه و هیچ مپرس\nخود راه بگویدت که چون باید رفت",
-  "transliteration": "To pay be rah dar neh o hich mapors\nKhod rah beguyadat ke chon bayad raft",
-  "translations": {
-    "en": "Set your foot upon the path and ask no questions;\nThe road itself will teach you how to walk.",
-    "tr": "Yola çık ve hiçbir şey sorma\nYol sana nasıl yürümen gerektiğini söyler"
+  {
+    "id": "022",
+    "poem_id": "022",
+    "poetId": "attar",
+    "genre": "Masnavi",
+    "original": "تو پای به راه در نه و هیچ مپرس\nخود راه بگویدت که چون باید رفت",
+    "transliteration": "To pay be rah dar neh o hich mapors\nKhod rah beguyadat ke chon bayad raft",
+    "translations": {
+      "en": "Set your foot upon the path and ask no questions;\nThe road itself will teach you how to walk.",
+      "tr": "Yola çık ve hiçbir şey sorma\nYol sana nasıl yürümen gerektiğini söyler"
+    },
+    "theme": "Mysticism"
   },
-  "theme": "Mysticism"
-},
-{
-  "id": "023",
-  "poetId": "ferdowsi",
-  "genre": "Epic",
-  "original": "خرد چشم جان است چون بنگری\nتو بی چشم شادان جهان نسپری",
-  "transliteration": "Kherad cheshm-e jan ast chon bengari\nTo bi cheshm shadan jahan naspari",
-  "translations": {
-    "en": "Wisdom is the eye of the soul—look well;\nWithout it, you cannot cross the world in joy.",
-    "tr": "Akıl ruhun gözüdür\nOnsuz dünyayı sevinçle geçemezsin"
+  {
+    "id": "023",
+    "poem_id": "023",
+    "poetId": "ferdowsi",
+    "genre": "Epic",
+    "original": "خرد چشم جان است چون بنگری\nتو بی چشم شادان جهان نسپری",
+    "transliteration": "Kherad cheshm-e jan ast chon bengari\nTo bi cheshm shadan jahan naspari",
+    "translations": {
+      "en": "Wisdom is the eye of the soul—look well;\nWithout it, you cannot cross the world in joy.",
+      "tr": "Akıl ruhun gözüdür\nOnsuz dünyayı sevinçle geçemezsin"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "024",
-  "poetId": "nizami",
-  "genre": "Epic",
-  "original": "جهان چون خط و خال و چشم و ابروست\nکه هر چیزی به جای خویش نیکوست",
-  "transliteration": "Jahan chon khat o khal o cheshm o abroost\nKe har chizi be jaye khish nikoost",
-  "translations": {
-    "en": "The world is like brow and eye and beauty mark—\nEach thing is lovely when it stands in its place.",
-    "tr": "Dünya kaş, göz ve ben gibidir\nHer şey yerinde güzeldir"
+  {
+    "id": "024",
+    "poem_id": "024",
+    "poetId": "nizami",
+    "genre": "Epic",
+    "original": "جهان چون خط و خال و چشم و ابروست\nکه هر چیزی به جای خویش نیکوست",
+    "transliteration": "Jahan chon khat o khal o cheshm o abroost\nKe har chizi be jaye khish nikoost",
+    "translations": {
+      "en": "The world is like brow and eye and beauty mark—\nEach thing is lovely when it stands in its place.",
+      "tr": "Dünya kaş, göz ve ben gibidir\nHer şey yerinde güzeldir"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "025",
-  "poetId": "jami",
-  "genre": "Ghazal",
-  "original": "ای دل ز فراقش به جان آمدی بسوز\nکز آتش عشقش همه عالم بسوخت",
-  "transliteration": "Ey del ze feraqash be jan amadi basooz\nKaz atash-e eshghash hame alam basookht",
-  "translations": {
-    "en": "O heart, burned alive by separation,\nHis love’s fire has set the whole world ablaze.",
-    "tr": "Ey gönül, ayrılıktan yandın\nOnun aşkının ateşi tüm âlemi yaktı"
+  {
+    "id": "025",
+    "poem_id": "025",
+    "poetId": "jami",
+    "genre": "Ghazal",
+    "original": "ای دل ز فراقش به جان آمدی بسوز\nکز آتش عشقش همه عالم بسوخت",
+    "transliteration": "Ey del ze feraqash be jan amadi basooz\nKaz atash-e eshghash hame alam basookht",
+    "translations": {
+      "en": "O heart, burned alive by separation,\nHis love’s fire has set the whole world ablaze.",
+      "tr": "Ey gönül, ayrılıktan yandın\nOnun aşkının ateşi tüm âlemi yaktı"
+    },
+    "theme": "Love"
   },
-  "theme": "Love"
-},
-{
-  "id": "026",
-  "poetId": "hafez",
-  "genre": "Ghazal",
-  "original": "ما بدین در نه پی حشمت و جاه آمده‌ایم\nاز بد حادثه اینجا به پناه آمده‌ایم",
-  "transliteration": "Ma bedin dar na pey-e heshmat o jah amade-im\nAz bad-e hadese inja be panah amade-im",
-  "translations": {
-    "en": "We did not come to this door seeking rank or glory;\nWe came for refuge from the blows of fate.",
-    "tr": "Bu kapıya makam için gelmedik\nFelaketlerden kaçıp buraya sığındık"
+  {
+    "id": "026",
+    "poem_id": "026",
+    "poetId": "hafez",
+    "genre": "Ghazal",
+    "original": "ما بدین در نه پی حشمت و جاه آمده‌ایم\nاز بد حادثه اینجا به پناه آمده‌ایم",
+    "transliteration": "Ma bedin dar na pey-e heshmat o jah amade-im\nAz bad-e hadese inja be panah amade-im",
+    "translations": {
+      "en": "We did not come to this door seeking rank or glory;\nWe came for refuge from the blows of fate.",
+      "tr": "Bu kapıya makam için gelmedik\nFelaketlerden kaçıp buraya sığındık"
+    },
+    "theme": "Sufism"
   },
-  "theme": "Sufism"
-},
-{
-  "id": "027",
-  "poetId": "rumi",
-  "genre": "Masnavi",
-  "original": "دیوانه شو، دیوانه شو\nو از قید عقل افسانه شو",
-  "transliteration": "Divane sho, divane sho\nO az qeyd-e aghl afsane sho",
-  "translations": {
-    "en": "Go mad—go mad,\nBreak free from reason and become a legend.",
-    "tr": "Deli ol, deli ol\nAklın zincirlerinden masala dönüş"
+  {
+    "id": "027",
+    "poem_id": "027",
+    "poetId": "rumi",
+    "genre": "Masnavi",
+    "original": "دیوانه شو، دیوانه شو\nو از قید عقل افسانه شو",
+    "transliteration": "Divane sho, divane sho\nO az qeyd-e aghl afsane sho",
+    "translations": {
+      "en": "Go mad—go mad,\nBreak free from reason and become a legend.",
+      "tr": "Deli ol, deli ol\nAklın zincirlerinden masala dönüş"
+    },
+    "theme": "Mysticism"
   },
-  "theme": "Mysticism"
-},
-{
-  "id": "028",
-  "poetId": "saadi",
-  "genre": "Ghazal",
-  "original": "به نیکی گرای و میازار کس\nره رستگاری همین است و بس",
-  "transliteration": "Be niki geray o miyazar kas\nRah-e rastgari hamin ast o bas",
-  "translations": {
-    "en": "Turn toward kindness and harm no one—\nThe path to salvation is nothing more.",
-    "tr": "İyiliğe yönel, kimseyi incitme\nKurtuluş yolu sadece budur"
+  {
+    "id": "028",
+    "poem_id": "028",
+    "poetId": "saadi",
+    "genre": "Ghazal",
+    "original": "به نیکی گرای و میازار کس\nره رستگاری همین است و بس",
+    "transliteration": "Be niki geray o miyazar kas\nRah-e rastgari hamin ast o bas",
+    "translations": {
+      "en": "Turn toward kindness and harm no one—\nThe path to salvation is nothing more.",
+      "tr": "İyiliğe yönel, kimseyi incitme\nKurtuluş yolu sadece budur"
+    },
+    "theme": "Humanity"
   },
-  "theme": "Humanity"
-},
-{
-  "id": "029",
-  "poetId": "omar-khayyam",
-  "genre": "Rubai",
-  "original": "چون عاقبت کار جهان نیستی است\nانگار که نیستی، چو هستی خوش باش",
-  "transliteration": "Chon aghebat-e kar-e jahan nisti ast\nEngar ke nisti, cho hasti khosh bash",
-  "translations": {
-    "en": "Since the end of the world is nothingness,\nLive as if you are nothing—be joyful while you are.",
-    "tr": "Dünyanın sonu hiçlikse\nVar olduğunda mutlu ol"
+  {
+    "id": "029",
+    "poem_id": "029",
+    "poetId": "omar-khayyam",
+    "genre": "Rubai",
+    "original": "چون عاقبت کار جهان نیستی است\nانگار که نیستی، چو هستی خوش باش",
+    "transliteration": "Chon aghebat-e kar-e jahan nisti ast\nEngar ke nisti, cho hasti khosh bash",
+    "translations": {
+      "en": "Since the end of the world is nothingness,\nLive as if you are nothing—be joyful while you are.",
+      "tr": "Dünyanın sonu hiçlikse\nVar olduğunda mutlu ol"
+    },
+    "theme": "Philosophy"
   },
-  "theme": "Philosophy"
-},
-{
-  "id": "030",
-  "poetId": "attar",
-  "genre": "Masnavi",
-  "original": "عشق آن شمعی‌ست کز پرتو او\nهر دو عالم در فروغ آمده‌اند",
-  "transliteration": "Eshgh an sham'i-st kaz partav-e oo\nHar do alam dar forugh amade-and",
-  "translations": {
-    "en": "Love is the candle whose light\nIlluminates both worlds.",
-    "tr": "Aşk öyle bir mumdur ki\nİki âlem onun ışığıyla aydınlanır"
+  {
+    "id": "030",
+    "poem_id": "030",
+    "poetId": "attar",
+    "genre": "Masnavi",
+    "original": "عشق آن شمعی‌ست کز پرتو او\nهر دو عالم در فروغ آمده‌اند",
+    "transliteration": "Eshgh an sham'i-st kaz partav-e oo\nHar do alam dar forugh amade-and",
+    "translations": {
+      "en": "Love is the candle whose light\nIlluminates both worlds.",
+      "tr": "Aşk öyle bir mumdur ki\nİki âlem onun ışığıyla aydınlanır"
+    },
+    "theme": "Divine"
   },
-  "theme": "Divine"
-},
-{
-  "id": "031",
-  "poetId": "ferdowsi",
-  "genre": "Epic",
-  "original": "میازار موری که دانه‌کش است\nکه جان دارد و جان شیرین خوش است",
-  "transliteration": "Miyazar muri ke dane-kesh ast\nKe jan darad o jan-e shirin khosh ast",
-  "translations": {
-    "en": "Do not harm the ant that carries its grain—\nIt has a soul, and life is sweet to it.",
-    "tr": "Bir karıncayı bile incitme\nOnun da canı vardır ve can tatlıdır"
+  {
+    "id": "031",
+    "poem_id": "031",
+    "poetId": "ferdowsi",
+    "genre": "Epic",
+    "original": "میازار موری که دانه‌کش است\nکه جان دارد و جان شیرین خوش است",
+    "transliteration": "Miyazar muri ke dane-kesh ast\nKe jan darad o jan-e shirin khosh ast",
+    "translations": {
+      "en": "Do not harm the ant that carries its grain—\nIt has a soul, and life is sweet to it.",
+      "tr": "Bir karıncayı bile incitme\nOnun da canı vardır ve can tatlıdır"
+    },
+    "theme": "Humanity"
   },
-  "theme": "Humanity"
-},
-{
-  "id": "032",
-  "poetId": "nizami",
-  "genre": "Epic",
-  "original": "سخن چون ز حد بگذرد ننگ بود\nنه چون خامشی خود درنگ بود",
-  "transliteration": "Sokhan chon ze had bogzarad nang bovad\nNa chon khamushi khod derang bovad",
-  "translations": {
-    "en": "When words exceed their bounds, they turn to shame;\nYet silence itself is not always restraint.",
-    "tr": "Söz haddini aşarsa ayıptır\nAma susmak da her zaman çözüm değildir"
+  {
+    "id": "032",
+    "poem_id": "032",
+    "poetId": "nizami",
+    "genre": "Epic",
+    "original": "سخن چون ز حد بگذرد ننگ بود\nنه چون خامشی خود درنگ بود",
+    "transliteration": "Sokhan chon ze had bogzarad nang bovad\nNa chon khamushi khod derang bovad",
+    "translations": {
+      "en": "When words exceed their bounds, they turn to shame;\nYet silence itself is not always restraint.",
+      "tr": "Söz haddini aşarsa ayıptır\nAma susmak da her zaman çözüm değildir"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "033",
-  "poetId": "jami",
-  "genre": "Ghazal",
-  "original": "دل به عشق تو سپردیم و ندانستیم\nکه این سودا ما را به کجا خواهد برد",
-  "transliteration": "Del be eshgh-e to sepordim o nadanestim\nKe in soda ma ra be koja khahad bord",
-  "translations": {
-    "en": "I surrendered my heart to your love, unaware\nWhere this longing would finally lead me.",
-    "tr": "Gönlümü sana verdim, bilmeden\nBu sevdanın beni nereye götüreceğini"
+  {
+    "id": "033",
+    "poem_id": "033",
+    "poetId": "jami",
+    "genre": "Ghazal",
+    "original": "دل به عشق تو سپردیم و ندانستیم\nکه این سودا ما را به کجا خواهد برد",
+    "transliteration": "Del be eshgh-e to sepordim o nadanestim\nKe in soda ma ra be koja khahad bord",
+    "translations": {
+      "en": "I surrendered my heart to your love, unaware\nWhere this longing would finally lead me.",
+      "tr": "Gönlümü sana verdim, bilmeden\nBu sevdanın beni nereye götüreceğini"
+    },
+    "theme": "Love"
   },
-  "theme": "Love"
-},
-{
-  "id": "034",
-  "poetId": "hafez",
-  "genre": "Ghazal",
-  "original": "پیر ما گفت خطا بر قلم صنع نرفت\nآفرین بر نظر پاک خطاپوشش باد",
-  "transliteration": "Pir-e ma goft khata bar qalam-e san’ naraft\nAfarin bar nazar-e pak-e khata-pooshash bad",
-  "translations": {
-    "en": "Our elder said: no error touched creation’s pen—\nPraise to the pure gaze that veils all faults.",
-    "tr": "Pirimiz dedi: yaratılışta hata yoktur\nHataları örten saf bakışa aferin"
+  {
+    "id": "034",
+    "poem_id": "034",
+    "poetId": "hafez",
+    "genre": "Ghazal",
+    "original": "پیر ما گفت خطا بر قلم صنع نرفت\nآفرین بر نظر پاک خطاپوشش باد",
+    "transliteration": "Pir-e ma goft khata bar qalam-e san’ naraft\nAfarin bar nazar-e pak-e khata-pooshash bad",
+    "translations": {
+      "en": "Our elder said: no error touched creation’s pen—\nPraise to the pure gaze that veils all faults.",
+      "tr": "Pirimiz dedi: yaratılışta hata yoktur\nHataları örten saf bakışa aferin"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "035",
-  "poetId": "rumi",
-  "genre": "Masnavi",
-  "original": "زخم آن نیست که بر جسم نشیند\nزخم آن است که بر جان رسد",
-  "transliteration": "Zakhm an nist ke bar jism neshinad\nZakhm an ast ke bar jan rasad",
-  "translations": {
-    "en": "The wound is not what strikes the body—\nThe true wound is what reaches the soul.",
-    "tr": "Yara bedende olan değildir\nAsıl yara ruha ulaşandır"
+  {
+    "id": "035",
+    "poem_id": "035",
+    "poetId": "rumi",
+    "genre": "Masnavi",
+    "original": "زخم آن نیست که بر جسم نشیند\nزخم آن است که بر جان رسد",
+    "transliteration": "Zakhm an nist ke bar jism neshinad\nZakhm an ast ke bar jan rasad",
+    "translations": {
+      "en": "The wound is not what strikes the body—\nThe true wound is what reaches the soul.",
+      "tr": "Yara bedende olan değildir\nAsıl yara ruha ulaşandır"
+    },
+    "theme": "Humanity"
   },
-  "theme": "Humanity"
-},
-{
-  "id": "036",
-  "poetId": "saadi",
-  "genre": "Ghazal",
-  "original": "چو دخلت نیست خرج آهسته‌تر کن\nکه می‌گویند ملاحان سرودی",
-  "transliteration": "Cho dakhlat nist kharj aheste-tar kon\nKe miguyand malahān sorudi",
-  "translations": {
-    "en": "If your income is small, spend with care—\nSo sing the sailors of old.",
-    "tr": "Gelirin yoksa harcamayı azalt\nDenizciler böyle bir söz söyler"
+  {
+    "id": "036",
+    "poem_id": "036",
+    "poetId": "saadi",
+    "genre": "Ghazal",
+    "original": "چو دخلت نیست خرج آهسته‌تر کن\nکه می‌گویند ملاحان سرودی",
+    "transliteration": "Cho dakhlat nist kharj aheste-tar kon\nKe miguyand malahān sorudi",
+    "translations": {
+      "en": "If your income is small, spend with care;\nSo sing the sailors of old.",
+      "tr": "Gelirin yoksa harcamayı azalt\nDenizciler böyle bir söz söyler"
+    },
+    "theme": "Wisdom"
   },
-  "theme": "Wisdom"
-},
-{
-  "id": "037",
-  "poetId": "omar-khayyam",
-  "genre": "Rubai",
-  "original": "این کوزه چو من عاشق زاری بوده‌ست\nدر بند سر زلف نگاری بوده‌ست",
-  "transliteration": "In kuze cho man ashegh-e zari boode-st\nDar band-e sar-e zolf-e negari boode-st",
-  "translations": {
-    "en": "This jug was once a lover like me,\nEnsnared by the curls of a beloved.",
-    "tr": "Bu testi bir zamanlar benim gibi âşıktı\nBir güzelin saçına tutsaktı"
+  {
+    "id": "037",
+    "poem_id": "037",
+    "poetId": "omar-khayyam",
+    "genre": "Rubai",
+    "original": "این کوزه چو من عاشق زاری بوده‌ست\nدر بند سر زلف نگاری بوده‌ست",
+    "transliteration": "In kuze cho man ashegh-e zari boode-st\nDar band-e sar-e zolf-e negari boode-st",
+    "translations": {
+      "en": "This jug was once a lover like me,\nEnsnared by the curls of a beloved.",
+      "tr": "Bu testi bir zamanlar benim gibi âşıktı\nBir güzelin saçına tutsaktı"
+    },
+    "theme": "Love"
   },
-  "theme": "Love"
-},
-{
-  "id": "038",
-  "poetId": "hafez",
-  "genre": "Ghazal",
-  "original": "دوش از مسجد سویِ میخانه آمد پیرِ ما\nچیست یارانِ طریقت بعد از این تدبیرِ ما؟\nما مریدان روی سویِ قبله چون آریم؟ چون\nروی سویِ خانهٔ خَمّار دارد پیرِ ما\nدر خراباتِ طریقت ما به هم منزل شویم\nکاین‌چنین رفته‌ است در عهدِ ازل تقدیرِ ما\nعقل اگر داند که دل در بندِ زلفش چون خوش است\nعاقلان دیوانه گردند از پیِ زنجیرِ ما\nرویِ خوبت آیتی از لطف بر ما کشف کرد\nزان زمان جز لطف و خوبی نیست در تفسیرِ ما\nبا دلِ سنگینت آیا هیچ درگیرد شبی\nآهِ آتشناک و سوزِ سینهٔ شبگیرِ ما؟\nتیرِ آهِ ما ز گردون بگذرد حافظ خموش\nرحم کن بر جانِ خود پرهیز کن از تیرِ ما",
-  "transliteration": "Dush az masjed sooy-e meykhāneh āmad pir-e mā\nChist yārān-e tariqat ba'd az in tadbir-e mā?\nMā moridān rooy sooy-e qeble chon ārim? chon\nRooy sooy-e khāneh-ye khammār dārad pir-e mā\nDar kharābāt-e tariqat mā be ham manzel shavim\nKayn-chenin rafte ast dar ahd-e azal taqdir-e mā\nAql agar dānad ke del dar band-e zolfash chon khosh ast\nĀqelān divāneh gardand az pey-e zanjir-e mā\nRooy-e khobet āyati az lotf bar mā kashf kard\nZān zamān joz lotf o khoobi nist dar tafsir-e mā\nBā del-e sanginat āyā hich dar-girad shabi\nĀh-e āteshnāk o sooz-e sine-ye shabgir-e mā?\nTir-e āh-e mā ze gardoon bogzarad Hāfez khamosh\nRahm kon bar jān-e khod parhiz kon az tir-e mā",
-  "translations": {
-    "en": "Last night our elder came from the mosque to the tavern\nWhat plan remains for the companions of the path after this?\nHow shall we disciples turn our faces toward the qibla?\nWhen our elder turns his face toward the vintner’s house\nIn the tavern of the path we shall dwell together\nFor so it was decreed in the covenant of eternity\nIf reason knew how sweet the heart is bound in his tresses\nThe wise would go mad in pursuit of our chain\nYour fair face revealed to us a sign of grace\nSince then, nothing but grace and beauty is in our commentary\nWill your heavy heart ever be touched one night\nBy the fiery sigh and the burning of our dawn chest?\nThe arrow of our sigh passes beyond the heavens, Hafez, be silent\nHave mercy on your soul, beware the arrow of ours",
-    "tr": "Dün gece pirimiz camiden meyhaneye geldi\nArtık yol arkadaşlarının tedbiri nedir?\nBiz müridler nasıl yüzümüzü kıbleye çevirelim?\nPirimiz yüzünü şarapçının evine çevirmişken\nTarikatın harabatında birlikte konaklarız\nÇünkü ezel ahdinde böyle yazılmıştır kaderimiz\nAkıl bilseydi gönlün zülfüne esir olmanın ne kadar hoş olduğunu\nAkıllılar zincirimizin peşinde deliye dönerdi\nGüzel yüzün bize bir lütuf ayeti açtı\nO zamandan beri tefsirimizde sadece lütuf ve güzellik vardır\nAğır kalbin bir gece olsun etkilenir mi\nBizim sabah vakti göğsümüzün ateşli ahından ve yanışından?\nAhımızın oku gökten geçer, Hafız sus\nKendi canına merhamet et, bizim okumuzdan sakın"
-  },
-  "theme": "Mystical"
-}
+  {
+    "id": "038",
+    "poem_id": "038",
+    "poetId": "hafez",
+    "genre": "Ghazal",
+    "original": "دوش از مسجد سویِ میخانه آمد پیرِ ما\nچیست یارانِ طریقت بعد از این تدبیرِ ما؟\nما مریدان روی سویِ قبله چون آریم؟ چون\nروی سویِ خانهٔ خَمّار دارد پیرِ ما\nدر خراباتِ طریقت ما به هم منزل شویم\nکاین‌چنین رفته‌ است در عهدِ ازل تقدیرِ ما\nعقل اگر داند که دل در بندِ زلفش چون خوش است\nعاقلان دیوانه گردند از پیِ زنجیرِ ما\nرویِ خوبت آیتی از لطف بر ما کشف کرد\nزان زمان جز لطف و خوبی نیست در تفسیرِ ما\nبا دلِ سنگینت آیا هیچ درگیرد شبی\nآهِ آتشناک و سوزِ سینهٔ شبگیرِ ما؟\nتیرِ آهِ ما ز گردون بگذرد حافظ خموش\nرحم کن بر جانِ خود پرهیز کن از تیرِ ما",
+    "transliteration": "Dush az masjed sooy-e meykhāneh āmad pir-e mā\nChist yārān-e tariqat ba'd az in tadbir-e mā?\nMā moridān rooy sooy-e qeble chon ārim? chon\nRooy sooy-e khāneh-ye khammār dārad pir-e mā\nDar kharābāt-e tariqat mā be ham manzel shavim\nKayn-chenin rafte ast dar ahd-e azal taqdir-e mā\nAql agar dānad ke del dar band-e zolfash chon khosh ast\nĀqelān divāneh gardand az pey-e zanjir-e mā\nRooy-e khobet āyati az lotf bar mā kashf kard\nZān zamān joz lotf o khoobi nist dar tafsir-e mā\nBā del-e sanginat āyā hich dar-girad shabi\nĀh-e āteshnāk o sooz-e sine-ye shabgir-e mā?\nTir-e āh-e mā ze gardoon bogzarad Hāfez khamosh\nRahm kon bar jān-e khod parhiz kon az tir-e mā",
+    "translations": {
+      "en": "Last night our elder came from the mosque to the tavern\nWhat plan remains for the companions of the path after this?\nHow shall we disciples turn our faces toward the qibla?\nWhen our elder turns his face toward the vintner’s house\nIn the tavern of the path we shall dwell together\nFor so it was decreed in the covenant of eternity\nIf reason knew how sweet the heart is bound in his tresses\nThe wise would go mad in pursuit of our chain\nYour fair face revealed to us a sign of grace\nSince then, nothing but grace and beauty is in our commentary\nWill your heavy heart ever be touched one night\nBy the fiery sigh and the burning of our dawn chest?\nThe arrow of our sigh passes beyond the heavens, Hafez, be silent\nHave mercy on your soul, beware the arrow of ours",
+      "tr": "Dün gece pirimiz camiden meyhaneye geldi\nArtık yol arkadaşlarının tedbiri nedir?\nBiz müridler nasıl yüzümüzü kıbleye çevirelim?\nPirimiz yüzünü şarapçının evine çevirmişken\nTarikatın harabatında birlikte konaklarız\nÇünkü ezel ahdinde böyle yazılmıştır kaderimiz\nAkıl bilseydi gönlün zülfüne esir olmanın ne kadar hoş olduğunu\nAkıllılar zincirimizin peşinde deliye dönerdi\nGüzel yüzün bize bir lütuf ayeti açtı\nO zamandan beri tefsirimizde sadece lütuf ve güzellik vardır\nAğır kalbin bir gece olsun etkilenir mi\nBizim sabah vakti göğsümüzün ateşli ahından ve yanışından?\nAhımızın oku gökten geçer, Hafız sus\nKendi canına merhamet et, bizim okumuzdan sakın"
+    },
+    "theme": "Mystical"
+  }
 ]
-
-
-

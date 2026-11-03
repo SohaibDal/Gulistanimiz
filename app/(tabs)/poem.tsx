@@ -181,7 +181,7 @@ export default function PoemScreen() {
     loadItem("transliteration").then(
       (t) => t !== null && setShowTransliteration(t)
     );
-    loadReadingMode().then(setReadingMode);
+    loadReadingMode().then((mode) => setReadingMode(mode ?? null));
   }, []);
 
   // Saved state
@@ -216,7 +216,7 @@ export default function PoemScreen() {
   /*
     Reading mode → visibility mapping
     - translationOnly: show only translation
-    - persianOnly: show only original (and optional transliteration)
+    - persianOnly: show only original
     - bilingual: show original + translation; transliteration remains user-togglable
   */
   const showOriginal =
@@ -230,9 +230,7 @@ export default function PoemScreen() {
     readingMode === null;
 
   const showTransliterationForMode =
-    readingMode === "persianOnly" ||
-    readingMode === "bilingual" ||
-    readingMode === null;
+    readingMode === "bilingual" || readingMode === null;
 
   /* ---------------- gestures ---------------- */
   const panGesture = Gesture.Pan()

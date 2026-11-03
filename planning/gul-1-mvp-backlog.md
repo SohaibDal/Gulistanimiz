@@ -33,7 +33,7 @@ This document defines the GitHub issue hierarchy and Excel-importable backlog fo
   - “Parent epic: #10” in the description.
   - Checklist of tasks, e.g. `- [ ] #23 Add readingMode preference to storage`.
 - Tasks:
-  - “Parent story: #12” and optional “Blocks: #34”.
+  - “Parent story: #12” and optional “Blocks: #34`.
 
 When importing from Excel, use the ID columns described below and then manually wire issue links once issues are created.
 
@@ -91,6 +91,12 @@ As a reader, I want to swipe horizontally through full-screen poem cards so that
 - Empty/loading state handled gracefully if poem data is unavailable.
 
 **Milestone:** `v0.1 MVP`
+
+Notes (v0.1 implementation details):
+- Poem tab now uses `ScreenWrapper` with an animated card that occupies ~80–82% of the viewport height in portrait, with vertical scrolling inside the card when content overflows.
+- Swipe navigation is implemented via `react-native-gesture-handler` pan gesture with horizontal thresholds and a small edge "nudge" animation at the start/end of the list instead of changing index out of range.
+- Current poem index is kept in simple in-memory module state (`lastSessionPoemIndex`) so that navigating away from and back to the Poem tab during a single app session restores the last-read poem (within the currently loaded poem subset). This is intentionally not persisted across app launches.
+- Deep links that provide `poemId` (from Genres/Writers/My Gulistan) still jump to the requested poem within the loaded subset; when both `poemId` and a previous session index exist, `poemId` wins for the initial selection.
 
 Tasks:
 - **T1.1.a – Define poem card layout**  

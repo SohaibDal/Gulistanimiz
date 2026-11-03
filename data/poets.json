@@ -1,0 +1,191 @@
+[
+  {
+    "id": "hafez",
+    "name": "Hafez",
+    "originalName": "حافظ شیرازی",
+    "bio": "One of the greatest Persian lyric poets",
+    "image": "hafez"
+  },
+  {
+    "id": "rumi",
+    "name": "Rumi",
+    "originalName": "جلال‌الدین محمد مولوی",
+    "bio": "Persian poet, theologian, and Sufi mystic",
+    "image": "rumi"
+  },
+  {
+    "id": "saadi",
+    "name": "Saadi",
+    "originalName": "سعدی شیرازی",
+    "bio": "Major Persian poet known for Gulistan and Bustan",
+    "image": "saadi"
+  },
+  {
+    "id": "ferdowsi",
+    "name": "Ferdowsi",
+    "originalName": "ابوالقاسم فردوسی",
+    "bio": "Author of the epic poem Shahnameh",
+    "image": "ferdowsi"
+  },
+  {
+    "id": "omar-khayyam",
+    "name": "Omar Khayyam",
+    "originalName": "عمر خیام",
+    "bio": "Persian polymath, poet, mathematician, and astronomer",
+    "image": "omar-khayyam"
+  },
+  {
+    "id": "nizami",
+    "name": "Nizami",
+    "originalName": "نظامی گنجوی",
+    "bio": "Persian poet of the 12th century",
+    "image": "nizami"
+  },
+  {
+    "id": "attar",
+    "name": "Attar",
+    "originalName": "عطار نیشابوری",
+    "bio": "Persian poet and Sufi mystic",
+    "image": "attar"
+  },
+  {
+    "id": "jami",
+    "name": "Jami",
+    "originalName": "عبدالرحمن جامی",
+    "bio": "Persian poet and scholar",
+    "image": "jami"
+  },
+  {
+    "id": "shahriar",
+    "name": "Shahriar",
+    "originalName": "شهریار",
+    "bio": "Turkish - Persian poet",
+    "image": "shahriar"
+  },
+  {
+    "id": "hilali",
+    "name": "Hilali Cagatayi",
+    "originalName": "هلالی جغتایی",
+    "bio": "Turkish Poet",
+    "image": "hilali"
+  },
+  {
+    "id": "rudaki",
+    "name": "Rudaki",
+    "originalName": "رودکی",
+    "bio": "Persian Poet",
+    "image": "rudaki"
+  },
+  {
+    "id": "abu-said",
+    "name": "Abū Saʿīd Abū'l-Khayr",
+    "originalName": "ابوسعید ابوالخیر",
+    "bio": "Persian Poet",
+    "image": "abu-said"
+  },
+  {
+    "id": "baba-tahir",
+    "name": "Baba Tahir",
+    "originalName": "باباطاهر",
+    "bio": "Persian Poet",
+    "image": "baba-tahir"
+  },
+  {
+    "id": "khaqani",
+    "name": "Afzal al-Dīn Badīl ibn ʿAlī ibn ʿOthmān",
+    "originalName": "خاقانی",
+    "bio": "Turkish - Persian Poet",
+    "image": "khaqani"
+  },
+  {
+    "id": "mahsati",
+    "name": "Mahsati",
+    "originalName": "مهستی گنجوی",
+    "bio": "Turkish - Persian Poet",
+    "image": "mahsati"
+  },
+  {
+    "id": "nasimi",
+    "name": "Imadaddin Nasimi",
+    "originalName": "سئید علی عمادالدّین نسیمی",
+    "bio": "Turkish Poet",
+    "image": "nasimi"
+  },
+  {
+    "id": "fuzuli",
+    "name": "Fuzuli",
+    "originalName": "فضولی",
+    "bio": "Turkish Poet",
+    "image": "fuzuli"
+  },
+  {
+    "id": "vahshi-bafqi",
+    "name": "Vahshi Bafqi",
+    "originalName": "وحشی بافقی",
+    "bio": "Persian Poet",
+    "image": "vahshi-bafqi"
+  },
+  {
+    "id": "saib",
+    "name": "Saib Tabrizi",
+    "originalName": "صائب تبریزی",
+    "bio": "Turkish Poet",
+    "image": "saib"
+  },
+  {
+    "id": "khalili",
+    "name": "Khalilullah Khalili",
+    "originalName": "خلیل‌الله خلیلی",
+    "bio": "Persian Poet",
+    "image": "khalili"
+  },
+  {
+    "id": "parvin",
+    "name": "Parvin E'tesami",
+    "originalName": "پروین اعتصامی",
+    "bio": "Persian Poet",
+    "image": "parvin"
+  },
+  {
+    "id": "mir-damad",
+    "name": "Seyyed Mir Mohammad Baqer Esterabadi",
+    "originalName": "ميرداماد",
+    "bio": "Persian Poet",
+    "image": "mir-damad"
+  },
+  {
+    "id": "iqbal",
+    "name": "Muhammad Iqbal Lahori",
+    "originalName": "اقبال لاهوری",
+    "bio": "Pakistani Poet",
+    "image": "iqbal"
+  },
+  {
+    "id": "bedil-dehlevi",
+    "name": "Abul-Ma'ānī Mīrzā Abdul-Qādir Bēdil",
+    "originalName": "بیدل دهلوی",
+    "bio": "Indian Poet",
+    "image": "bedil-dehlevi"
+  },
+  {
+    "id": "sheikh-bahayi",
+    "name": "Baha al-Din al-Amili",
+    "originalName": "شیخ بهایی",
+    "bio": "Persian Poet",
+    "image": "sheikh-bahayi"
+  },
+  {
+    "id": "ali-shir",
+    "name": "Nizām-al-Din ʿAli-Shir Herawī",
+    "originalName": "امیرعلیشیر نوایی",
+    "bio": "Turkish Poet",
+    "image": "ali-shir"
+  },
+  {
+    "id": "amir-khusrow",
+    "name": "Abu'l Hasan Yamīn ud-Dīn Khusrow",
+    "originalName": "امیرخسرو دهلوی",
+    "bio": "Turkish Poet",
+    "image": "amir-khusrow"
+  }
+]

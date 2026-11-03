@@ -1,0 +1,32 @@
+export const poetImages: Record<string, any> = {
+  "ali-shir": require("../assets/poets/ali-shir.jpg"),
+  "amir-khusrow": require("../assets/poets/amir-khusrow.jpg"),
+  attar: require("../assets/poets/attar.jpg"),
+  "baba-tahir": require("../assets/poets/baba-tahir.jpg"),
+  "bedil-dehlevi": require("../assets/poets/bedil-dehlevi.jpg"),
+  ebusaid: require("../assets/poets/ebusaid.jpg"),
+  ferdowsi: require("../assets/poets/ferdowsi.jpg"),
+  fuzuli: require("../assets/poets/fuzuli.jpg"),
+  hafez: require("../assets/poets/hafez.jpg"),
+  halilullah: require("../assets/poets/halilullah.jpg"),
+  haqani: require("../assets/poets/haqani.jpg"),
+  hayyam: require("../assets/poets/hayyam.jpg"),
+  hilali: require("../assets/poets/hilali.jpg"),
+  iqbal: require("../assets/poets/iqbal.jpg"),
+  jami: require("../assets/poets/jami.jpg"),
+  mahsati: require("../assets/poets/mahsati.jpg"),
+  "mir-damad": require("../assets/poets/mir-damad.jpg"),
+  nasimi: require("../assets/poets/nasimi.jpg"),
+  nizami: require("../assets/poets/nizami.jpg"),
+  "omar-khayyam": require("../assets/poets/omar-khayyam.jpg"),
+  parvin: require("../assets/poets/parvin.jpg"),
+  rudaki: require("../assets/poets/rudaki.jpg"),
+  rumi: require("../assets/poets/rumi.jpg"),
+  saadi: require("../assets/poets/saadi.jpg"),
+  saib: require("../assets/poets/saib.jpg"),
+  shahriar: require("../assets/poets/shahriar.jpg"),
+  "sheikh-bahayi": require("../assets/poets/sheikh-bahayi.jpg"),
+  "vahshi-bafqi": require("../assets/poets/vahshi-bafqi.jpg")
+};
+
+

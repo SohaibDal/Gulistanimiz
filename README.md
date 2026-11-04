@@ -41,9 +41,15 @@ The full poem JSON schema (field types, relationships, and an example object) is
 
 ## Validate poem data
 
-A dedicated npm script will run a validator that checks `data/poems.json` against the expected schema and basic integrity rules.
+Use the poem data validator to check that `data/poems.json` matches the expected schema and basic integrity rules.
 
-Once that script is available in `package.json`, run it from the project root with `npm run <script-name>`. On success it should exit with code 0 and print a short summary (including the number of poems validated); if there are problems it should list the issues it finds and exit with a non-zero status.
+From the project root, run:
+
+```bash
+npm run validate:poems
+```
+
+When the data is valid the script exits with code 0 and prints a short success summary (including the number of poems validated). If there are problems it lists the issues it finds and exits with a non-zero status, making it suitable for use in both local development and CI.
 
 ## Get a fresh project
 

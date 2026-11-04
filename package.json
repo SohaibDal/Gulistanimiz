@@ -8,8 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint",
-    "validate:poems": "node --loader ts-node/esm scripts/validate-poems.ts"
+    "lint": "expo lint"
   },
   "dependencies": {
     "@expo-google-fonts/cormorant-garamond": "^0.4.1",

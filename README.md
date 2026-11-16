@@ -25,6 +25,20 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Content and data
+
+Poem content for the app lives in the JSON file:
+
+- `data/poems.json` — list of poem objects (id, poetId, genre, original, transliteration, translations, theme)
+
+Each poem references a poet from:
+
+- `data/poets.json` — list of poet objects with `id`, `name`, and related metadata
+
+The full poem JSON schema (field types, relationships, and an example object) is documented in:
+
+- `planning/content-schema.md` — **Poem JSON schema** section
+
 ## Get a fresh project
 
 When you're ready, run:

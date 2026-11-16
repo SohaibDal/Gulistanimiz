@@ -25,6 +25,16 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Validate poem data
+
+From the project root, run the poem data validator to check that `data/poems.json` matches the documented schema and has all required fields:
+
+```bash
+npm run validate:poems
+```
+
+The validator runs locally, needs no network access, and expects to be run after `npm install`.
+
 ## Content and data
 
 Poem content for the app lives in the JSON file:
@@ -38,18 +48,6 @@ Each poem references a poet from:
 The full poem JSON schema (field types, relationships, and an example object) is documented in:
 
 - `planning/content-schema.md` — **Poem JSON schema** section
-
-## Validate poem data
-
-Use the poem data validator to check that `data/poems.json` matches the schema in `planning/content-schema.md` and basic integrity rules.
-
-From the project root, run:
-
-```bash
-npm run validate:poems
-```
-
-When the data is valid the script exits with code 0 and prints a short success summary (including the number of poems validated). If there are problems (including `data/poems.json` being unreadable or unparseable) it lists the issues it finds on stderr and exits with code 1.
 
 ## Get a fresh project
 

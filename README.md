@@ -41,7 +41,7 @@ The full poem JSON schema (field types, relationships, and an example object) is
 
 ## Validate poem data
 
-From the repo root, you can validate that `data/poems.json` matches the documented schema and includes all required fields:
+From the repo root, you can validate that `data/poems.json` matches the poem schema in `planning/content-schema.md` and includes all required fields:
 
 ```bash
 npm run validate:poems

@@ -41,7 +41,11 @@ The full poem JSON schema (field types, relationships, and an example object) is
 
 ## Validate poem data
 
-From the repo root, validate that `data/poems.json` matches the poem schema in `planning/content-schema.md` using the npm script documented in this repository (it should run the TypeScript validator in `scripts/validate-poems.ts`).
+From the repo root, check `data/poems.json` against the poem schema in `planning/content-schema.md` using:
+
+```bash
+npm run validate:poems
+```
 
 The validator exits with code 0 and prints `poems.json: OK (N poem(s) validated)` when all poems pass, and exits with code 1 when issues are found or the file cannot be read or parsed; issues are printed to stderr.
 

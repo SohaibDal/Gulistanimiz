@@ -27,13 +27,13 @@ You can start developing by editing the files inside the **app** directory. This
 
 ## Validate poem data
 
-From the project root, run the poem data validator to check that `data/poems.json` matches the documented schema and has all required fields. The npm script name is not wired up yet; it will be added under GUL-17 (T2.2.a) as part of the validator implementation.
+Once the validator wiring is added under GUL-17 (T2.2.a), you will be able to run a local check from the repo root to validate that `data/poems.json` matches the documented schema and includes all required fields.
 
 ```bash
 npm run validate:poems
 ```
 
-The validator is intended to run locally with no network access, after `npm install`.
+Run this from the project root after `npm install`. The validator is intended to run locally with no network access.
 
 ## Content and data
 
